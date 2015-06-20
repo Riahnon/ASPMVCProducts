@@ -1,0 +1,39 @@
+﻿
+body {
+    padding:100px;
+    background-color: #fff;
+    color: #333;
+    font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+}
+.productentry {
+    margin-top:10px;
+    margin-bottom:10px;
+    background-color:lightgray;
+    padding-left:10px;
+    padding-bottom:10px;
+}
+
+.productname {
+    margin-top:3px;
+    margin-bottom:5px;
+}
+
+.productdescription {
+    margin-left:10px;
+    margin-bottom:10px;
+}
+
+.productdetails form {
+    display:inline;
+    margin:0px;
+}
+
+.productdetails input {
+    background-color: transparent;
+    text-decoration: underline;
+    color:blue;
+    border: none;
+    cursor: pointer;
+    display:inline;
+}
