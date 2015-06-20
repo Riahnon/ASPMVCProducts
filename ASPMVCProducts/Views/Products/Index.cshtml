@@ -17,7 +17,6 @@
         <h3 class="productname"> @item.Name</h3>
         <div class="productdetails">
             <div class="productdescription">@item.Description</div>
-
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) &nbsp;|
             <form action="/Products/Delete?id=@item.Id" method="post">
                 @Html.AntiForgeryToken()
