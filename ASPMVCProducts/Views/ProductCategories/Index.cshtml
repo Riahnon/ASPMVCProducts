@@ -1,0 +1,29 @@
+﻿@model IEnumerable<ASPMVCProducts.Models.ProductCategory>
+
+@{
+    ViewBag.Title = "Product categories";
+}
+
+<h2>Product categories</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+
+
+@foreach (var item in Model) {
+    <div class="productcategory-entry">
+        <h3> @item.Name</h3>
+        <div class="productcategory-details">
+            <div>@item.Description</div>
+        </div>
+        @Html.ActionLink("Edit", "Edit", new { id=item.Id }) &nbsp;|
+        <form action="/ProductCategories/Delete?id=@item.Id" method="post">
+            @Html.AntiForgeryToken()
+            <input type="submit" value="Delete" />
+        </form>
+    </div>
+}
+
+

@@ -1,37 +1,28 @@
 ﻿using ASPMVCProducts.Models;
-using ASPMVCProducts.ViewModels.Products;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace ASPMVCProducts.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductCategoriesController : Controller
     {
         ProductsDb m_tDb = new ProductsDb();
         //
-        // GET: /Products/
+        // GET: /Categories/
 
         public ActionResult Index()
         {
-            var lModel = new ProductsViewModel()
-            {
-                Products = m_tDb.Products,
-                ProductCategories = m_tDb.ProductCategories
-            };
-            
+            var lModel = m_tDb.ProductCategories;
+
             return View(lModel);
         }
 
-       
-
         //
-        // GET: /Products/Create
+        // GET: /Categories/Create
 
         public ActionResult Create()
         {
@@ -46,27 +37,19 @@ namespace ASPMVCProducts.Controllers
         {
             try
             {
-                var lProduct = new Product()
+                var lCategory = new ProductCategory()
                 {
-                    Name= collection["Name"],
+                    Name = collection["Name"],
                     Description = collection["Description"]
                 };
-                m_tDb.Products.Add(lProduct);
+                m_tDb.ProductCategories.Add(lCategory);
                 m_tDb.SaveChanges();
-}
-            catch ( DbUpdateException e )
+            }
+            catch (DbUpdateException e)
             {
-               
+
             }
             return RedirectToAction("Index");
-        }
-
-         //
-        // GET: /Products/Edit/5
-
-        public ActionResult WebAPI()
-        {
-            return View();
         }
 
         //
@@ -74,9 +57,9 @@ namespace ASPMVCProducts.Controllers
 
         public ActionResult Edit(int id)
         {
-            var lProduct = m_tDb.Products.FirstOrDefault(aProduct => aProduct.Id == id);
-            if( lProduct != null )
-                return View(lProduct);
+            var lCategory = m_tDb.ProductCategories.FirstOrDefault(aCategory => aCategory.Id == id);
+            if (lCategory != null)
+                return View(lCategory);
 
             return RedirectToAction("Index");
         }
@@ -90,11 +73,11 @@ namespace ASPMVCProducts.Controllers
             try
             {
                 // TODO: Add update logic here
-                var lProduct = m_tDb.Products.FirstOrDefault(aProduct => aProduct.Id == id);
-                if (lProduct != null)
+                var lCategory = m_tDb.ProductCategories.FirstOrDefault(aCategory => aCategory.Id == id);
+                if (lCategory != null)
                 {
-                    lProduct.Name = collection["Name"];
-                    lProduct.Description = collection["Description"];
+                    lCategory.Name = collection["Name"];
+                    lCategory.Description = collection["Description"];
                     m_tDb.SaveChanges();
                 }
                 return RedirectToAction("Index");
@@ -105,45 +88,22 @@ namespace ASPMVCProducts.Controllers
             }
         }
 
-        //
-        // POST: /Products/Edit/5
-
-        [HttpPost]
-        public ActionResult AddCategory(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-                var lProduct = m_tDb.Products.FirstOrDefault(aProduct => aProduct.Id == id);
-                //if (lProduct != null)
-                //{
-                //    lProduct.Name = collection["Name"];
-                //    lProduct.Description = collection["Description"];
-                //    m_tDb.SaveChanges();
-                //}
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
         // POST: /Products/Delete/name=dasdsd
         [HttpPost]
         public ActionResult Delete(int id)
         {
             try
             {
-                var lProduct = m_tDb.Products.FirstOrDefault(aProd => aProd.Id == id);
-                if (lProduct != null)
+                var lCategory = m_tDb.ProductCategories.FirstOrDefault(aCategory => aCategory.Id == id);
+                if (lCategory != null)
                 {
-                    m_tDb.Products.Remove(lProduct);
+                    m_tDb.ProductCategories.Remove(lCategory);
                     m_tDb.SaveChanges();
                 }
             }
             catch
             {
-                
+
             }
             return RedirectToAction("Index");
         }

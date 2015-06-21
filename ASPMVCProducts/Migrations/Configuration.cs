@@ -1,4 +1,4 @@
-namespace ProductList.Migrations
+namespace ASPMVCProducts.Migrations
 {
     using ASPMVCProducts.Models;
     using System;

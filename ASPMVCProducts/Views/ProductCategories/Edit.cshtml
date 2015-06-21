@@ -1,17 +1,17 @@
-﻿@model ASPMVCProducts.Models.Product
+﻿@model ASPMVCProducts.Models.ProductCategory
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit product category";
 }
 
-<h2>Edit</h2>
+<h2>Edit product category</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Product</legend>
+        <legend>Product category</legend>
 
         @Html.HiddenFor(model => model.Id)
 
@@ -30,25 +30,6 @@
             @Html.EditorFor(model => model.Description)
             @Html.ValidationMessageFor(model => model.Description)
         </div>
-        @{
-            var lCategoriesStr = String.Join(",", Model.Categories.Select(aCategory => aCategory.Name ) );
-        }
-                
-        @if(!string.IsNullOrEmpty( lCategoriesStr )){
-            <div>
-                Categories: "@lCategoriesStr"
-            </div>
-        }
-        
-        @*@{
-            var lCategoriesStr = String.Join(",", Model.Categories.Select(aCategory => aCategory.Name));
-        }
-                
-        @if(!string.IsNullOrEmpty( lCategoriesStr )){
-        <div>
-            Categories: "@lCategoriesStr"
-        </div>
-        }*@
 
         <p>
             <input type="submit" value="Save" />
