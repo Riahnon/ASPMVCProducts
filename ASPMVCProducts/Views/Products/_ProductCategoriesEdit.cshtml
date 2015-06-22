@@ -1,0 +1,64 @@
+﻿@model ASPMVCProducts.ViewModels.Products.ProductCategoriesEditModel
+
+<div id="categories-div" class="categories-div">
+
+</div>
+        
+<select id="category-sel">
+    @foreach (var lCategoryStr in Model.ExistingCategories.Select(aCategory => aCategory.Name))
+    {
+        <option value="@lCategoryStr">@lCategoryStr</option>
+    }
+</select>
+<input id="add-category-btn" type="submit" value="Add category"/>
+
+<p>
+    <input type="submit" value="Save" />
+</p>
+<script type="text/javascript">
+            
+    @{
+        var lCategoryNames = Model.SelectedCategories.Select(aCategory => "\"" + aCategory.Name + "\"").ToArray();
+        var lCategoriesValue = "[" + String.Join(", ", lCategoryNames) +"]";
+    }
+    var lCategories = @Html.Raw(lCategoriesValue)
+
+    var lDivCategories = document.getElementById("categories-div");
+    var lAddCategoryButton = document.getElementById("add-category-btn");
+    var lCategorySelect = document.getElementById("category-sel");
+            
+
+    lAddCategoryButton.onclick = function () 
+    {
+        if (lCategories.indexOf(lCategorySelect.value) == -1 )
+        {
+            lCategories.push(lCategorySelect.value);
+            resetCategories();
+        }
+        return false;
+    }
+
+    function onRemoveCategoryClick( aCategoryStr ) 
+    {
+        var lIdx = lCategories.indexOf(aCategoryStr);
+        if (lIdx > -1 )
+        {
+            lCategories.splice(lIdx, 1);
+            resetCategories();
+        }
+    }
+
+    function resetCategories() {
+        lDivCategories.innerHTML = "";
+        for( var i=0; i<lCategories.length; ++i)
+        {
+            var lId = "removeCategory-" + lCategories[i];
+            lDivCategories.innerHTML += "<label class=\"category-label\">"+lCategories[i]+"<label name=\"" + lId + "\"+ onclick=\"onRemoveCategoryClick('"+lCategories[i]+"')\" class=\"category-label-delete\">X</label></label>";
+            lDivCategories.innerHTML += "<input type=\"hidden\" name=\"Category." + lCategories[i] + "\"/>"; 
+        }
+    }
+
+    window.onload = function () {
+        resetCategories();
+    }
+</script>

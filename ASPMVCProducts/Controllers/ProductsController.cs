@@ -75,8 +75,10 @@ namespace ASPMVCProducts.Controllers
         public ActionResult Edit(int id)
         {
             var lProduct = m_tDb.Products.FirstOrDefault(aProduct => aProduct.Id == id);
-            if( lProduct != null )
-                return View(lProduct);
+						if (lProduct != null)
+						{
+							return View(new ProductEditModel() { Product = lProduct, ProductCategories = m_tDb.ProductCategories });
+						}
 
             return RedirectToAction("Index");
         }
@@ -89,20 +91,27 @@ namespace ASPMVCProducts.Controllers
         {
             try
             {
-                // TODO: Add update logic here
-                var lProduct = m_tDb.Products.FirstOrDefault(aProduct => aProduct.Id == id);
-                if (lProduct != null)
-                {
-                    lProduct.Name = collection["Name"];
-                    lProduct.Description = collection["Description"];
-                    m_tDb.SaveChanges();
-                }
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+							var lCategoryToken = "Category.";
+							var lCategoryNames = collection.Keys.Cast<String>().Where ( aKey => aKey.StartsWith(lCategoryToken) ).Select ( aKey => aKey.Remove(0,lCategoryToken.Length)).ToArray();
+
+							//var lValueMap = collection.Keys.Select(aKey => new KeyValuePair<string, object>(aKey, collection[aKey])).ToArray();
+              // TODO: Add update logic here
+              var lProduct = m_tDb.Products.FirstOrDefault(aProduct => aProduct.Id == id);
+							var lCategories = m_tDb.ProductCategories.Where(aCategory => lCategoryNames.Contains(aCategory.Name));
+              if (lProduct != null)
+              {
+                  lProduct.Name = collection["Product.Name"];
+                  lProduct.Description = collection["Product.Description"];
+									lProduct.Categories.Clear();
+									lProduct.Categories.AddRange(lCategories);
+                  m_tDb.SaveChanges();
+              }
+              return RedirectToAction("Index");
+          }
+          catch (Exception ex)
+          {
+              return View();
+          }
         }
 
         //

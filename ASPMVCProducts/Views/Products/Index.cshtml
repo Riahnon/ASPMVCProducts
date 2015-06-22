@@ -18,22 +18,18 @@
         <div class="product-details">
             <div>@item.Description</div>
             @{
-                var lCategoriesStr = String.Join(",", item.Categories.Select(aCategory => aCategory.Name ) );
+                var lCategoriesStr = String.Join(", ", item.Categories.Select(aCategory => aCategory.Name ) );
             }
                 
             @if(!string.IsNullOrEmpty( lCategoriesStr )){
                 <div>
-                    Categories: "@lCategoriesStr"
+                    Categories: @lCategoriesStr
                 </div>
             }
        
         </div>    
         @Html.ActionLink("Edit", "Edit", new { id=item.Id }) &nbsp; |
-        @*<form method="post">
-                @Html.AntiForgeryToken()
-                @Html.DropDownList( "Category", Model.ProductCategories.Select ( aCategory => new SelectListItem() { Selected = false, Text = aCategory.Name, Value = aCategory.Name } ) )
-                <input type="submit" value="Add category" />
-        </form> &nbsp; |*@
+       
         <form action="/Products/Delete?id=@item.Id" method="post">
             @Html.AntiForgeryToken()
             <input type="submit" value="Delete" />
