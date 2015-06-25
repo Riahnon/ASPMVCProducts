@@ -11,13 +11,12 @@ using System.Web.Mvc;
 
 namespace ASPMVCProducts.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         ProductsDb m_tDb = new ProductsDb();
         //
         // GET: /Products/
-
-				[Authorize]
         public ActionResult Index()
         {
             var lModel = new ProductsViewModel()
@@ -33,7 +32,6 @@ namespace ASPMVCProducts.Controllers
 
         //
         // GET: /Products/Create
-				[Authorize]
         public ActionResult Create()
         {
             return View();
@@ -43,7 +41,6 @@ namespace ASPMVCProducts.Controllers
         // POST: /Products/Create
 
         [HttpPost]
-				[Authorize]
         public ActionResult Create(FormCollection collection)
         {
             try
@@ -73,7 +70,6 @@ namespace ASPMVCProducts.Controllers
 
         //
         // GET: /Products/Edit/5
-				[Authorize]
         public ActionResult Edit(int id)
         {
             var lProduct = m_tDb.Products.FirstOrDefault(aProduct => aProduct.Id == id);
@@ -89,7 +85,6 @@ namespace ASPMVCProducts.Controllers
         // POST: /Products/Edit/5
 
         [HttpPost]
-				[Authorize]
         public ActionResult Edit(int id, FormCollection collection)
         {
             try
@@ -121,7 +116,6 @@ namespace ASPMVCProducts.Controllers
         // POST: /Products/Edit/5
 
         [HttpPost]
-				[Authorize]
         public ActionResult AddCategory(int id, FormCollection collection)
         {
             try
@@ -143,7 +137,6 @@ namespace ASPMVCProducts.Controllers
         }
         // POST: /Products/Delete/name=dasdsd
         [HttpPost]
-				[Authorize]
         public ActionResult Delete(int id)
         {
             try

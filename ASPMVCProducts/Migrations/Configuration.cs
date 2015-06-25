@@ -2,9 +2,12 @@ namespace ASPMVCProducts.Migrations
 {
     using ASPMVCProducts.Models;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using System.Web.Security;
+    using WebMatrix.WebData;
 
     internal sealed class Configuration : DbMigrationsConfiguration<ASPMVCProducts.Models.ProductsDb>
     {
@@ -16,18 +19,82 @@ namespace ASPMVCProducts.Migrations
 
         protected override void Seed(ASPMVCProducts.Models.ProductsDb context)
         {
+            SeedMembership();
+            var lDefaultOwner = context.UserProfiles.Where( aUserProfile => aUserProfile.UserName == "gcastro" ).FirstOrDefault();
+            ProductCategory[] lProductCategories = null;
             var lRnd = new Random();
-            var lProducts = new Product[10];
-            for (int i = 0; i < lProducts.Length; ++i)
+            if (context.ProductCategories.Count() == 0 && lDefaultOwner != null)
             {
-                lProducts[i] = new Product()
+                lProductCategories = new ProductCategory[lRnd.Next(10) + 5];
+                for (int i = 0; i < lProductCategories.Length; ++i)
                 {
-                    Name = _GenerateRandomString(10, lRnd),
-                    Description = _GenerateRandomString(25, lRnd)
-                };
+                    lProductCategories[i] = new ProductCategory()
+                    {
+                        Name = _GenerateRandomString(10, lRnd),
+                        Description = _GenerateRandomString(25, lRnd),
+                        Owner = lDefaultOwner
+                    };
+                }
             }
-            //  This method will be called after migrating to the latest version.
-            context.Products.AddOrUpdate(lProducts);
+            else
+            {
+                lProductCategories = context.ProductCategories.ToArray();
+            }
+            if (context.Products.Count() == 0 && lDefaultOwner != null)
+            {
+                var lProducts = new Product[lRnd.Next(10) + 5];
+                for (int i = 0; i < lProducts.Length; ++i)
+                {
+                    //Amount of categories that the product will have
+                    var lCategoryCnt = lRnd.Next(lProductCategories.Length + 1);
+                    List<ProductCategory> lCategories = new List<ProductCategory>(lCategoryCnt);
+                    //Categories that the product belongs to are randomly fetched
+                    while(lCategories.Count < lCategoryCnt)
+                    {
+                        var lCategory = lProductCategories[lRnd.Next(lProductCategories.Length)];
+                        if (!lCategories.Contains(lCategory))
+                        {
+                            if (lCategory.Products == null)
+                                lCategory.Products = new List<Product>();
+
+                            lCategories.Add(lCategory);
+                        }
+                    }
+                    //Product is created
+                    lProducts[i] = new Product()
+                    {
+                        Name = _GenerateRandomString(10, lRnd),
+                        Description = _GenerateRandomString(25, lRnd),
+                        Owner = lDefaultOwner,
+                        Categories = lCategories
+                    };
+                    //Product is added to product list of the categories it belongs to
+                    foreach (var lCategory in lCategories)
+                    {
+                        lCategory.Products.Add(lProducts[i]);
+                    }
+                }
+
+                context.Products.AddOrUpdate(lProducts);
+                context.ProductCategories.AddOrUpdate(lProductCategories);
+
+            }
+
+            
+        }
+
+        private void SeedMembership()
+        {
+            WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+
+            var lRoles = (SimpleRoleProvider)Roles.Provider;
+            var lMembership = (SimpleMembershipProvider)Membership.Provider;
+
+            if (lMembership.GetUser("gcastro", false) == null)
+            {
+                lMembership.CreateUserAndAccount("gcastro", "gcastro");
+            }
+
         }
 
         private const string APLHANUMERIC_CHARS_STR = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
