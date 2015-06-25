@@ -13,7 +13,7 @@ namespace ASPMVCProducts.Controllers
         ProductsDb m_tDb = new ProductsDb();
         //
         // GET: /Categories/
-
+				[Authorize]
         public ActionResult Index()
         {
             var lModel = m_tDb.ProductCategories;
@@ -23,7 +23,7 @@ namespace ASPMVCProducts.Controllers
 
         //
         // GET: /Categories/Create
-
+				[Authorize]
         public ActionResult Create()
         {
             return View();
@@ -33,6 +33,7 @@ namespace ASPMVCProducts.Controllers
         // POST: /Products/Create
 
         [HttpPost]
+				[Authorize]
         public ActionResult Create(FormCollection collection)
         {
             try
@@ -54,7 +55,7 @@ namespace ASPMVCProducts.Controllers
 
         //
         // GET: /Products/Edit/5
-
+				[Authorize]
         public ActionResult Edit(int id)
         {
             var lCategory = m_tDb.ProductCategories.FirstOrDefault(aCategory => aCategory.Id == id);
@@ -68,6 +69,7 @@ namespace ASPMVCProducts.Controllers
         // POST: /Products/Edit/5
 
         [HttpPost]
+				[Authorize]
         public ActionResult Edit(int id, FormCollection collection)
         {
             try
@@ -90,6 +92,7 @@ namespace ASPMVCProducts.Controllers
 
         // POST: /Products/Delete/name=dasdsd
         [HttpPost]
+				[Authorize]
         public ActionResult Delete(int id)
         {
             try

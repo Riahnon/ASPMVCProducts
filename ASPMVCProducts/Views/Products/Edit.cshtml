@@ -1,4 +1,4 @@
-﻿@model ASPMVCProducts.Models.Product
+﻿@model ASPMVCProducts.ViewModels.Products.ProductEditModel
 
 @{
     ViewBag.Title = "Edit";
@@ -6,53 +6,39 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
         <legend>Product</legend>
 
-        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Product.Id)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
+            @Html.LabelFor(model => model.Product.Name)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
+            @Html.EditorFor(model => model.Product.Name)
+            @Html.ValidationMessageFor(model => model.Product.Name)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Description)
+            @Html.LabelFor(model => model.Product.Description)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Description)
-            @Html.ValidationMessageFor(model => model.Description)
+            @Html.EditorFor(model => model.Product.Description)
+            @Html.ValidationMessageFor(model => model.Product.Description)
         </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Product.Categories)
+        </div>
+
         @{
-            var lCategoriesStr = String.Join(",", Model.Categories.Select(aCategory => aCategory.Name ) );
+            var lViewModel = new ASPMVCProducts.ViewModels.Products.ProductCategoriesEditModel() { SelectedCategories=Model.Product.Categories, ExistingCategories=Model.ProductCategories  };
+            Html.RenderPartial("_ProductCategoriesEdit", lViewModel);
         }
-                
-        @if(!string.IsNullOrEmpty( lCategoriesStr )){
-            <div>
-                Categories: "@lCategoriesStr"
-            </div>
-        }
-        
-        @*@{
-            var lCategoriesStr = String.Join(",", Model.Categories.Select(aCategory => aCategory.Name));
-        }
-                
-        @if(!string.IsNullOrEmpty( lCategoriesStr )){
-        <div>
-            Categories: "@lCategoriesStr"
-        </div>
-        }*@
-
-        <p>
-            <input type="submit" value="Save" />
-        </p>
     </fieldset>
 }
 

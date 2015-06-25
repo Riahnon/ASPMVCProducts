@@ -42,3 +42,34 @@ body {
 .product-entry input,.productcategory-entry input   {
     text-decoration: underline;
 }
+
+.categories-div {
+    margin-top:3px;
+    margin-bottom:3px;
+}
+
+
+.category-label {
+    border-radius: 3px;
+    background:lightgray;
+    padding-left:3px;
+    padding-right:3px;
+    margin-left:3px;
+    margin-right:3px;
+    display: inline-block;
+    vertical-align: middle;
+    line-height:1.5;
+}
+
+
+.category-label-delete {
+    font-weight:900;
+    margin-left:3px;
+    margin-right:3px;
+    
+}
+
+.category-label-delete:hover {
+    color:red;
+    
+}
