@@ -5,6 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebMatrix.WebData;
 
 namespace ASPMVCProducts.Controllers
 {
@@ -17,7 +18,7 @@ namespace ASPMVCProducts.Controllers
 				[Authorize]
         public ActionResult Index()
         {
-            var lModel = m_tDb.ProductCategories;
+            var lModel = m_tDb.ProductCategories.Where ( aProductCategory => aProductCategory.Owner.UserId == WebSecurity.CurrentUserId );
 
             return View(lModel);
         }
@@ -33,6 +34,7 @@ namespace ASPMVCProducts.Controllers
         // POST: /Products/Create
 
         [HttpPost]
+				[ValidateAntiForgeryToken]
         public ActionResult Create(FormCollection collection)
         {
             try
@@ -40,7 +42,8 @@ namespace ASPMVCProducts.Controllers
                 var lCategory = new ProductCategory()
                 {
                     Name = collection["Name"],
-                    Description = collection["Description"]
+                    Description = collection["Description"],
+										Owner = m_tDb.UserProfiles.Where ( aUser => aUser.UserId == WebSecurity.CurrentUserId ).FirstOrDefault()
                 };
                 m_tDb.ProductCategories.Add(lCategory);
                 m_tDb.SaveChanges();
@@ -67,6 +70,7 @@ namespace ASPMVCProducts.Controllers
         // POST: /Products/Edit/5
 
         [HttpPost]
+				[ValidateAntiForgeryToken]
         public ActionResult Edit(int id, FormCollection collection)
         {
             try
@@ -89,6 +93,7 @@ namespace ASPMVCProducts.Controllers
 
         // POST: /Products/Delete/name=dasdsd
         [HttpPost]
+				[ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             try

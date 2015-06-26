@@ -69,17 +69,17 @@
     display: inline;
 }
 
-label {
+#loginForm label {
     display: block;
     font-size: 1.2em;
     font-weight: 600;
 }
 
-label.checkbox {
+#loginForm label.checkbox {
     display: inline;
 }
 
-input, textarea {
+#loginForm input, textarea {
     border: 1px solid #e2e2e2;
     background: #fff;
     color: #333;

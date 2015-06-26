@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebMatrix.WebData;
 
 namespace ASPMVCProducts.Controllers
 {
@@ -21,8 +22,8 @@ namespace ASPMVCProducts.Controllers
         {
             var lModel = new ProductsViewModel()
             {
-                Products = m_tDb.Products,
-                ProductCategories = m_tDb.ProductCategories
+                Products = m_tDb.Products.Where ( aProduct => aProduct.Owner.UserId == WebSecurity.CurrentUserId ),
+								ProductCategories = m_tDb.ProductCategories.Where(aProductCategory => aProductCategory.Owner.UserId == WebSecurity.CurrentUserId)
             };
             
             return View(lModel);
@@ -41,6 +42,7 @@ namespace ASPMVCProducts.Controllers
         // POST: /Products/Create
 
         [HttpPost]
+				[ValidateAntiForgeryToken]
         public ActionResult Create(FormCollection collection)
         {
             try
@@ -48,7 +50,8 @@ namespace ASPMVCProducts.Controllers
                 var lProduct = new Product()
                 {
                     Name= collection["Name"],
-                    Description = collection["Description"]
+                    Description = collection["Description"],
+										Owner = m_tDb.UserProfiles.Where(aUser => aUser.UserId == WebSecurity.CurrentUserId).FirstOrDefault()
                 };
                 m_tDb.Products.Add(lProduct);
                 m_tDb.SaveChanges();
@@ -75,7 +78,11 @@ namespace ASPMVCProducts.Controllers
             var lProduct = m_tDb.Products.FirstOrDefault(aProduct => aProduct.Id == id);
 						if (lProduct != null)
 						{
-							return View(new ProductEditModel() { Product = lProduct, ProductCategories = m_tDb.ProductCategories });
+							return View(new ProductEditModel() 
+							{ 
+								Product = lProduct,
+								ProductCategories = m_tDb.ProductCategories.Where(aProductCategory => aProductCategory.Owner.UserId == WebSecurity.CurrentUserId)
+							});
 						}
 
             return RedirectToAction("Index");
@@ -85,6 +92,7 @@ namespace ASPMVCProducts.Controllers
         // POST: /Products/Edit/5
 
         [HttpPost]
+				[ValidateAntiForgeryToken]
         public ActionResult Edit(int id, FormCollection collection)
         {
             try
@@ -95,7 +103,9 @@ namespace ASPMVCProducts.Controllers
 							//var lValueMap = collection.Keys.Select(aKey => new KeyValuePair<string, object>(aKey, collection[aKey])).ToArray();
               // TODO: Add update logic here
               var lProduct = m_tDb.Products.FirstOrDefault(aProduct => aProduct.Id == id);
-							var lCategories = m_tDb.ProductCategories.Where(aCategory => lCategoryNames.Contains(aCategory.Name));
+							var lCategories = m_tDb.ProductCategories
+								.Where(aProductCategory => aProductCategory.Owner.UserId == WebSecurity.CurrentUserId)
+								.Where(aCategory => lCategoryNames.Contains(aCategory.Name));
               if (lProduct != null)
               {
                   lProduct.Name = collection["Product.Name"];
@@ -112,31 +122,9 @@ namespace ASPMVCProducts.Controllers
           }
         }
 
-        //
-        // POST: /Products/Edit/5
-
-        [HttpPost]
-        public ActionResult AddCategory(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-                var lProduct = m_tDb.Products.FirstOrDefault(aProduct => aProduct.Id == id);
-                //if (lProduct != null)
-                //{
-                //    lProduct.Name = collection["Name"];
-                //    lProduct.Description = collection["Description"];
-                //    m_tDb.SaveChanges();
-                //}
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
         // POST: /Products/Delete/name=dasdsd
         [HttpPost]
+				[ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             try
