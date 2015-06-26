@@ -1,11 +1,14 @@
 ﻿
 body {
-    padding:100px;
     background-color: #fff;
+    border-top: solid 10px #000;
     color: #333;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+    padding: 20px;
 }
+
 .product-entry,.productcategory-entry {
     margin-top:10px;
     margin-bottom:10px;

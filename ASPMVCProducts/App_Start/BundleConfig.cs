@@ -24,7 +24,7 @@ namespace ASPMVCProducts
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                //"~/Content/site.css",
+                "~/Content/site.css",
                 "~/Content/products.css"
                 ));
 
