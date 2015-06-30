@@ -6,22 +6,24 @@
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
-         <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        </ul>
-                    </nav>
-                </div>
     </head>
     <body>
+        <header>
+            <section id="layout-login">
+                @Html.Partial("_LoginPartial")
+            </section>
+        </header>
+        <aside id="layout-aside">
+                <ul id="menu">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("View products", "Index", "Products")</li>
+                    <li>@Html.ActionLink("View product categories", "Index", "ProductCategories")</li>
+                </ul>
+            </aside>
+        <div id="layout-body">
+            @RenderBody()
+        </div>
         
-
-                @RenderBody()
-         
 
         @Scripts.Render("~/bundles/jquery")
         @RenderSection("scripts", required: false)
