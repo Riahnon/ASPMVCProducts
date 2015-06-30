@@ -15,9 +15,16 @@ namespace ASPMVCProducts.Controllers
 
        
         // GET api/productsapi
+        [Authorize]
         public string Get()
         {
-            var lProducts = m_tDb.Products.ToList();
+            var lProducts = m_tDb.Products.Select ( aProduct => new
+                {
+                    Id = aProduct.Id,
+                    Name = aProduct.Name,
+                    Description = aProduct.Description,
+                }).ToList();
+
             var lJSONData = JsonConvert.SerializeObject(lProducts);
             return lJSONData;
         }
