@@ -13,20 +13,27 @@ namespace ASPMVCProducts.Controllers
     {
         ProductsDb m_tDb = new ProductsDb();
 
-       
+				public class ProductDTO
+				{
+					public int Id { get; set; }
+					public string Name { get; set; }
+					public string Description { get; set; }
+				}
         // GET api/productsapi
         [Authorize]
-        public string Get()
+				public IEnumerable<ProductDTO> Get()
         {
-            var lProducts = m_tDb.Products.Select ( aProduct => new
-                {
-                    Id = aProduct.Id,
-                    Name = aProduct.Name,
-                    Description = aProduct.Description,
-                }).ToList();
+						var lProducts = m_tDb.Products.Select(aProduct => new ProductDTO
+            {
+                Id = aProduct.Id,
+                Name = aProduct.Name,
+                Description = aProduct.Description,
+            }).ToList();
 
+						return lProducts;
+					/*
             var lJSONData = JsonConvert.SerializeObject(lProducts);
-            return lJSONData;
+            return lJSONData;*/
         }
         /*
         // GET api/productsapi/5
