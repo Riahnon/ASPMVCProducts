@@ -20,6 +20,7 @@ namespace ASPMVCProducts.Controllers
         // GET: /Products/
         public ActionResult Index()
         {
+					var lName = this.User.Identity.Name;
             var lModel = new ProductsViewModel()
             {
                 Products = m_tDb.Products.Where ( aProduct => aProduct.Owner.UserId == WebSecurity.CurrentUserId ),

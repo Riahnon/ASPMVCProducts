@@ -55,7 +55,13 @@ namespace ASPMVCProducts.Controllers
 		{
 			var lUserProfile = m_tDb.UserProfiles.FirstOrDefault(aUserProfile => aUserProfile.UserName == aUser.UserName);
 			if (lUserProfile != null && WebSecurity.Login(aUser.UserName, aUser.Password))
-				return this.Request.CreateResponse<UserDTO>(HttpStatusCode.OK, new UserDTO { Id = lUserProfile.UserId, Name = lUserProfile.UserName });
+			{
+				
+				var lResponse = this.Request.CreateResponse<UserDTO>(HttpStatusCode.OK, new UserDTO { Id = lUserProfile.UserId, Name = lUserProfile.UserName });
+				var lToken = RSA.Encrypt(lUserProfile.UserName);
+				lResponse.Headers.Add("Authorization-Token", lToken);
+				return lResponse;
+			}
 
 			return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
 		}
