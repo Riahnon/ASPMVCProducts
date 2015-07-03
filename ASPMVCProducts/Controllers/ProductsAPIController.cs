@@ -21,8 +21,7 @@ namespace ASPMVCProducts.Controllers
 			public string Description { get; set; }
 		}
 		// GET api/productsapi
-		//[Authorize]
-		[TokenValidation]
+		[Authorize]
 		public IEnumerable<ProductDTO> Get()
 		{
 			
@@ -35,9 +34,6 @@ namespace ASPMVCProducts.Controllers
 			}).ToList();
 
 			return lProducts;
-			/*
-				var lJSONData = JsonConvert.SerializeObject(lProducts);
-				return lJSONData;*/
 		}
 		/*
 		// GET api/productsapi/5

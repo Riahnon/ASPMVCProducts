@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using System.Web.Security;
@@ -58,8 +60,25 @@ namespace ASPMVCProducts.Controllers
 			{
 				
 				var lResponse = this.Request.CreateResponse<UserDTO>(HttpStatusCode.OK, new UserDTO { Id = lUserProfile.UserId, Name = lUserProfile.UserName });
-				var lToken = RSA.Encrypt(lUserProfile.UserName);
-				lResponse.Headers.Add("Authorization-Token", lToken);
+				// sometimes used to persist user roles
+				string lUserData = string.Empty;
+
+				FormsAuthenticationTicket lTicket = new FormsAuthenticationTicket(
+					1,                                     // ticket version
+					aUser.UserName,                              // authenticated username
+					DateTime.Now,                          // issueDate
+					DateTime.Now.AddMinutes(30),           // expiryDate
+					false,                          // true to persist across browser sessions
+					lUserData,                              // can be used to store additional user data
+					FormsAuthentication.FormsCookiePath);  // the path for the cookie
+
+				// Encrypt the ticket using the machine key
+				string lEncryptedTicket = FormsAuthentication.Encrypt(lTicket);
+
+				//// Add the cookie to the request to save it
+				CookieHeaderValue lCookie = new CookieHeaderValue(FormsAuthentication.FormsCookieName, lEncryptedTicket);
+				lResponse.Headers.AddCookies( new CookieHeaderValue[]{ lCookie } );
+
 				return lResponse;
 			}
 
