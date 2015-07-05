@@ -44,8 +44,14 @@ namespace ASPMVCProducts.Controllers
 			{
 				lMembership.CreateUserAndAccount(aUser.UserName, aUser.Password);
 				var lUserProfile = m_tDb.UserProfiles.FirstOrDefault(aUserProfile => aUserProfile.UserName == aUser.UserName);
-				if (lUserProfile != null)
-					return this.Request.CreateResponse<UserDTO>(HttpStatusCode.OK, new UserDTO { Id = lUserProfile.UserId, Name = lUserProfile.UserName });
+                if (lUserProfile != null)
+                {
+                    var lResponse = this.Request.CreateResponse<UserDTO>(HttpStatusCode.OK, new UserDTO { Id = lUserProfile.UserId, Name = lUserProfile.UserName });
+                    FormsAuthenticationTicket lTicket = new FormsAuthenticationTicket(aUser.UserName, false, 30);
+                    var lCookieHeader = new CookieHeaderValue(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(lTicket));
+                    lResponse.Headers.AddCookies(new CookieHeaderValue[] { lCookieHeader });
+                    return lResponse;
+                }
 			}
 			return this.Request.CreateResponse(HttpStatusCode.NotModified); 
 		}
@@ -58,27 +64,10 @@ namespace ASPMVCProducts.Controllers
 			var lUserProfile = m_tDb.UserProfiles.FirstOrDefault(aUserProfile => aUserProfile.UserName == aUser.UserName);
 			if (lUserProfile != null && WebSecurity.Login(aUser.UserName, aUser.Password))
 			{
-				
 				var lResponse = this.Request.CreateResponse<UserDTO>(HttpStatusCode.OK, new UserDTO { Id = lUserProfile.UserId, Name = lUserProfile.UserName });
-				// sometimes used to persist user roles
-				string lUserData = string.Empty;
-
-				FormsAuthenticationTicket lTicket = new FormsAuthenticationTicket(
-					1,                                     // ticket version
-					aUser.UserName,                              // authenticated username
-					DateTime.Now,                          // issueDate
-					DateTime.Now.AddMinutes(30),           // expiryDate
-					false,                          // true to persist across browser sessions
-					lUserData,                              // can be used to store additional user data
-					FormsAuthentication.FormsCookiePath);  // the path for the cookie
-
-				// Encrypt the ticket using the machine key
-				string lEncryptedTicket = FormsAuthentication.Encrypt(lTicket);
-
-				//// Add the cookie to the request to save it
-				CookieHeaderValue lCookie = new CookieHeaderValue(FormsAuthentication.FormsCookieName, lEncryptedTicket);
-				lResponse.Headers.AddCookies( new CookieHeaderValue[]{ lCookie } );
-
+				FormsAuthenticationTicket lTicket = new FormsAuthenticationTicket(aUser.UserName, false, 30);
+                var lCookieHeader =  new CookieHeaderValue(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(lTicket));
+				lResponse.Headers.AddCookies( new CookieHeaderValue[]{ lCookieHeader } );
 				return lResponse;
 			}
 
