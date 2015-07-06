@@ -16,10 +16,6 @@ namespace ASPMVCProducts.Controllers
 {
 	public class AccountAPIController : ApiController
 	{
-		/* MUST HAVE A LOOK AT THIS
-		 * http://codebetter.com/johnvpetersen/2012/04/02/making-your-asp-net-web-apis-secure/
-		 * 
-		 */
 		ProductsDb m_tDb = new ProductsDb();
 		public class RegisterUserDTO
 		{
@@ -39,21 +35,21 @@ namespace ASPMVCProducts.Controllers
 		public HttpResponseMessage Register([FromBody]RegisterUserDTO aUser)
 		{
 			var lMembership = (SimpleMembershipProvider)Membership.Provider;
-			
+
 			if (lMembership.GetUser(aUser.UserName, false) == null)
 			{
 				lMembership.CreateUserAndAccount(aUser.UserName, aUser.Password);
-				var lUserProfile = m_tDb.UserProfiles.FirstOrDefault(aUserProfile => aUserProfile.UserName == aUser.UserName);
-                if (lUserProfile != null)
-                {
-                    var lResponse = this.Request.CreateResponse<UserDTO>(HttpStatusCode.OK, new UserDTO { Id = lUserProfile.UserId, Name = lUserProfile.UserName });
-                    FormsAuthenticationTicket lTicket = new FormsAuthenticationTicket(aUser.UserName, false, 30);
-                    var lCookieHeader = new CookieHeaderValue(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(lTicket));
-                    lResponse.Headers.AddCookies(new CookieHeaderValue[] { lCookieHeader });
-                    return lResponse;
-                }
+var lUserProfile = m_tDb.UserProfiles.FirstOrDefault(aUserProfile => aUserProfile.UserName == aUser.UserName);
+				if (lUserProfile != null && WebSecurity.Login(aUser.UserName, aUser.Password))
+				{
+					var lResponse = this.Request.CreateResponse<UserDTO>(HttpStatusCode.OK, new UserDTO { Id = lUserProfile.UserId, Name = lUserProfile.UserName });
+					FormsAuthenticationTicket lTicket = new FormsAuthenticationTicket(aUser.UserName, false, 30);
+					var lCookieHeader = new CookieHeaderValue(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(lTicket));
+					lResponse.Headers.AddCookies(new CookieHeaderValue[] { lCookieHeader });
+					return lResponse;
+				}
 			}
-			return this.Request.CreateResponse(HttpStatusCode.NotModified); 
+			return this.Request.CreateResponse(HttpStatusCode.NotModified);
 		}
 
 		// POST api/accountapi
@@ -66,12 +62,21 @@ namespace ASPMVCProducts.Controllers
 			{
 				var lResponse = this.Request.CreateResponse<UserDTO>(HttpStatusCode.OK, new UserDTO { Id = lUserProfile.UserId, Name = lUserProfile.UserName });
 				FormsAuthenticationTicket lTicket = new FormsAuthenticationTicket(aUser.UserName, false, 30);
-                var lCookieHeader =  new CookieHeaderValue(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(lTicket));
-				lResponse.Headers.AddCookies( new CookieHeaderValue[]{ lCookieHeader } );
+				var lCookieHeader =  new CookieHeaderValue(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(lTicket));
+				lResponse.Headers.AddCookies(new CookieHeaderValue[] { lCookieHeader });
 				return lResponse;
 			}
-
 			return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
+		}
+
+		[HttpPost]
+		[ActionName("logout")]
+		[Authorize]
+		public HttpResponseMessage Logout()
+		{
+			WebSecurity.Logout();
+			var lResponse = this.Request.CreateResponse(HttpStatusCode.OK);
+			return lResponse;
 		}
 
 		protected override void Dispose(bool disposing)

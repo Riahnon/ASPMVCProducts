@@ -26,7 +26,7 @@ namespace ASPMVCProducts.Controllers
 		{
 			
 			var lId = WebSecurity.CurrentUserId;
-			var lProducts = m_tDb.Products.Select(aProduct => new ProductDTO
+			var lProducts = m_tDb.Products.Where(aProduct => aProduct.Owner.UserId == lId ).Select(aProduct => new ProductDTO
 			{
 				Id = aProduct.Id,
 				Name = aProduct.Name,
