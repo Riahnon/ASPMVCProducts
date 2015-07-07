@@ -10,9 +10,8 @@ namespace ASPMVCProducts.Models
     public class ProductCategory
     {
         public int Id { get; set; }
-        public UserProfile Owner { get; set; }
         [Index(IsUnique = true)]
-        [StringLength(200)] 
+        [StringLength(256)] 
         public string Name { get; set; }
         public string Description { get; set; }
         public virtual List<Product> Products { get; set; }

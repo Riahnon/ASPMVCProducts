@@ -34,7 +34,7 @@ body {
     float: right;
     width: 84%;
 }
-.product-entry,.productcategory-entry {
+.product-entry,.productcategory-entry,.productlist-entry {
     margin-top:10px;
     margin-bottom:10px;
     background-color:lightgray;
@@ -52,7 +52,7 @@ body {
     margin-bottom:5px;
 }
 
-.product-details,.productcategory-details {
+.product-comments {
     margin-left:10px;
     margin-bottom:10px;
 }

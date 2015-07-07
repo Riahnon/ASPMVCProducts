@@ -189,6 +189,8 @@
     <Compile Include="Controllers\ProductCategoriesAPIController.cs" />
     <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductListController.cs" />
+    <Compile Include="Controllers\ProductListsController.cs" />
     <Compile Include="Controllers\ProductsAPIController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -198,6 +200,8 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductCategory.cs" />
+    <Compile Include="Models\ProductEntry.cs" />
+    <Compile Include="Models\ProductList.cs" />
     <Compile Include="Models\ProductsDb.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -326,6 +330,9 @@
     <Content Include="Views\ProductCategories\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Products\_ProductCategoriesEdit.cshtml" />
+    <Content Include="Views\ProductLists\Index.cshtml" />
+    <Content Include="Views\ProductLists\Create.cshtml" />
+    <Content Include="Views\ProductList\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

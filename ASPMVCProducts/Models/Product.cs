@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
 namespace ASPMVCProducts.Models
 {
-    public class Product
-    {
-        public int Id { get; set; }
-        public UserProfile Owner { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public virtual List<ProductCategory> Categories { get; set; }
-    }
+	public class Product
+	{
+		[Key]
+		public int Id { get; set; }
+		[Index(IsUnique = true)]
+		[StringLength(256)] 
+		public string Name { get; set; }
+	}
 }

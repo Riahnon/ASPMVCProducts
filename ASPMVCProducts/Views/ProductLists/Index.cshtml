@@ -1,0 +1,25 @@
+﻿@model IEnumerable<ASPMVCProducts.Models.ProductList>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Product Lists</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+
+@foreach (var item in Model) {
+    <div class="productlist-entry">
+        <h3>@item.Name (@item.Products.Count( aProductEntry => aProductEntry.Checked ) / @item.Products.Count )</h3>
+        @Html.ActionLink("Edit", "Index", "ProductList", new { Id = item.Id }, null) &nbsp;|
+        <form action="/ProductLists/Delete?id=@item.Id" method="post">
+            @Html.AntiForgeryToken()
+            <input type="submit" value="Delete" />
+        </form>
+    </div>
+}
+
