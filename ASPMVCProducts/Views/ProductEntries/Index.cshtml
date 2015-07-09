@@ -1,0 +1,35 @@
+﻿@model ASPMVCProducts.Models.ProductList
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Products</h2>
+<p>
+    @Html.ActionLink("Create New", "Create", new { listid = Model.Id } )
+</p>
+
+@if(Model.Products.Count > 0 ) {
+    foreach (var item in Model.Products) {
+    <div class="productcategory-entry">
+        <h3>@item.Product.Name</h3>
+        <div class="product-comments">
+            <div>@item.Comments</div>
+        </div>
+        @Html.ActionLink("Edit", "Edit", "ProductEntries", new { listid=Model.Id, entryid=item.Id }, null)
+        @Html.ActionLink("Delete", "Delete", "ProductEntries", new { listid=Model.Id, entryid=item.Id }, null)
+
+       @* @Html.ActionLink("Edit", "Edit", new { id = item.Id }) &nbsp;|
+            <form action="/ProductList/Delete?productid=@item.Id" method="post">
+                @Html.AntiForgeryToken()
+                <input type="submit" value="Delete" />
+            </form>*@
+    </div>
+    
+    }
+}
+else
+{
+    <h2>[Empty list]</h2>
+}
