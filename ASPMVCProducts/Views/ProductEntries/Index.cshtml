@@ -17,8 +17,8 @@
         <div class="product-comments">
             <div>@item.Comments</div>
         </div>
-        @Html.ActionLink("Edit", "Edit", "ProductEntries", new { listid=Model.Id, entryid=item.Id }, null)
-        @Html.ActionLink("Delete", "Delete", "ProductEntries", new { listid=Model.Id, entryid=item.Id }, null)
+        @Html.ActionLink("Edit", "Edit", "ProductEntries", new { listid=Model.Id, id=item.Id }, null)
+        @Html.ActionLink("Delete", "Delete", "ProductEntries", new { listid=Model.Id, id=item.Id }, null)
 
        @* @Html.ActionLink("Edit", "Edit", new { id = item.Id }) &nbsp;|
             <form action="/ProductList/Delete?productid=@item.Id" method="post">

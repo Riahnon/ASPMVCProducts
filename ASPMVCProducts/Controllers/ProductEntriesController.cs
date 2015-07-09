@@ -85,18 +85,18 @@ namespace ASPMVCProducts.Controllers
 
 		// GET: /ProductEntries/Edit/1&2
 		[HttpGet]
-		public ActionResult Edit(int listid, int entryid)
+		public ActionResult Edit(int listid, int id)
 		{
 			var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Id == listid);
 			if (lList != null)
 			{
-				var lEntry = lList.Products.Find(aEntry => aEntry.Id == entryid);
+				var lEntry = lList.Products.Find(aEntry => aEntry.Id == id);
 				if (lEntry != null)
 				{
 					var lViewModel = new ProductEntryEditViewModel()
 					{
 						ListId = listid,
-						EntryId = entryid,
+						EntryId = id,
 						Ammount = lEntry.Ammount,
 						Checked = lEntry.Checked,
 						Comments = lEntry.Comments
@@ -140,18 +140,18 @@ namespace ASPMVCProducts.Controllers
 
 		// GET: /ProductEntries/Delete/1&2
 		[HttpGet]
-		public ActionResult Delete(int listid, int entryid)
+		public ActionResult Delete(int listid, int id)
 		{
 			var lList = m_tDb.ProductLists.FirstOrDefault( aList=> aList.Id == listid);
 			if (lList != null)
 			{
-				var lEntry = lList.Products.Find(aEntry => aEntry.Id == entryid);
+				var lEntry = lList.Products.Find(aEntry => aEntry.Id == id);
 				if (lEntry != null)
 				{
 					var lViewModel = new ProductEntryDeleteViewModel()
 					{
 						ListId = listid,
-						EntryId = entryid,
+						EntryId = id,
 						Name = lEntry.Product.Name
 					};
 					return View(lViewModel);
