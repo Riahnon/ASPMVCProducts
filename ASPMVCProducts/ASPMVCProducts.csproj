@@ -189,8 +189,8 @@
     <Compile Include="APIControllers\ProductCategoriesAPIController.cs" />
     <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ProductEntryController.cs" />
-    <Compile Include="Controllers\ProductListController.cs" />
+    <Compile Include="Controllers\ProductEntriesController.cs" />
+    <Compile Include="Controllers\ProductListsController.cs" />
     <Compile Include="APIControllers\ProductsAPIController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -206,6 +206,8 @@
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ProductEntryCreateViewModel.cs" />
+    <Compile Include="ViewModels\ProductEntryDeleteViewModel.cs" />
+    <Compile Include="ViewModels\ProductEntryEditViewModel.cs" />
     <Compile Include="ViewModels\ProductListCreateViewModel.cs" />
     <Compile Include="ViewModels\Products\ProductCategoriesEditModel.cs" />
     <Compile Include="ViewModels\Products\ProductEditModel.cs" />
@@ -332,11 +334,13 @@
     <Content Include="Views\ProductCategories\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Products\_ProductCategoriesEdit.cshtml" />
-    <Content Include="Views\ProductEntry\Index.cshtml" />
-    <Content Include="Views\ProductEntry\Create.cshtml" />
-    <Content Include="Views\ProductList\Create.cshtml" />
-    <Content Include="Views\ProductList\Index.cshtml" />
-    <Content Include="Views\ProductList\Delete.cshtml" />
+    <Content Include="Views\ProductEntries\Index.cshtml" />
+    <Content Include="Views\ProductEntries\Create.cshtml" />
+    <Content Include="Views\ProductLists\Create.cshtml" />
+    <Content Include="Views\ProductLists\Index.cshtml" />
+    <Content Include="Views\ProductLists\Delete.cshtml" />
+    <Content Include="Views\ProductEntries\Edit.cshtml" />
+    <Content Include="Views\ProductEntries\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

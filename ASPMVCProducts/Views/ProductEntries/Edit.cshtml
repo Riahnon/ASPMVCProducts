@@ -1,0 +1,55 @@
+﻿@model ASPMVCProducts.ViewModels.ProductEntryEditViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Product entry</legend>
+
+        @Html.HiddenFor(model => model.ListId)
+        @Html.HiddenFor(model => model.EntryId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Checked)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Checked)
+            @Html.ValidationMessageFor(model => model.Checked)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Ammount)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Ammount)
+            @Html.ValidationMessageFor(model => model.Ammount)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comments)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Comments)
+            @Html.ValidationMessageFor(model => model.Comments)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

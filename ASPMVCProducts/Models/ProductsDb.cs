@@ -8,10 +8,13 @@ namespace ASPMVCProducts.Models
 {
     public class ProductsDb : DbContext
     {
+			
         public DbSet<Product> Products { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
 				public DbSet<ProductList> ProductLists { get; set; }
-				public DbSet<ProductEntry> ProductEntries { get; set; }
+				//public DbSet<ProductEntry> ProductEntries { get; set; }
+
+
     }
 }
