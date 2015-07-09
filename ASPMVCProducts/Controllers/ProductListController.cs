@@ -1,9 +1,12 @@
 ﻿using ASPMVCProducts.Models;
+using ASPMVCProducts.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebMatrix.WebData;
 
 namespace ASPMVCProducts.Controllers
 {
@@ -12,27 +15,84 @@ namespace ASPMVCProducts.Controllers
 	{
 		ProductsDb m_tDb = new ProductsDb();
 		//
-		// GET: /ProductList/1
+		// GET: /ProductList/
 
-		public ActionResult Index(int id = -1)
+		public ActionResult Index()
 		{
-			var lList = m_tDb.ProductLists.Where(aList => aList.Id == id).FirstOrDefault();
-			
-			return View(lList);
+			var lLists = m_tDb.ProductLists.Where(aList => aList.Owner.UserId == WebSecurity.CurrentUserId).ToList();
+			return View(lLists);
 		}
 
-		// POST: /Products/Delete/name=dasdsd
+		//
+        // GET: /ProductList/Create
+		public ActionResult Create()
+		{
+			return View(new ProductListCreateViewModel());
+		}
+
+		//
+        // POST: /ProductList/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int listid, int productid)
+        public ActionResult Create(ProductListCreateViewModel aProductList)
+		{
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var lOwner = m_tDb.UserProfiles.Where(aUserProfie => aUserProfie.UserId == WebSecurity.CurrentUserId).FirstOrDefault();
+                    if (lOwner != null)
+                    {
+
+                        var lProductList = new ProductList()
+                        {
+                            Name = aProductList.Name,
+                            Owner = lOwner,
+                            Products = new List<ProductEntry>()
+                        };
+                        m_tDb.ProductLists.Add(lProductList);
+                        m_tDb.SaveChanges();
+                    }
+                }
+                catch (DbUpdateException e)
+                {
+
+                }
+            }
+			return RedirectToAction("Index");
+		}
+
+        // GET: /ProductList/Delete/5
+        [HttpGet]
+        public ActionResult Delete(int id = 0)
+        {
+            try
+            {
+                var lProductList = m_tDb.ProductLists.Find( id );
+                if (lProductList == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(lProductList);
+            }
+            catch
+            {
+
+            }
+            return RedirectToAction("Index");
+        }
+
+		// POST: /ProductList/Delete/5
+        [HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public ActionResult DeleteConfirmed(int id=0 )
 		{
 			try
 			{
-				var lList = m_tDb.ProductLists.Where(aList => aList.Id == listid).FirstOrDefault();
-				var lProduct = lList.Products.FirstOrDefault(aProd => aProd.Id == productid);
-				if (lProduct != null)
+				var lProductList = m_tDb.ProductLists.Find(id);
+				if (lProductList != null)
 				{
-					lList.Products.Remove(lProduct);
+					m_tDb.ProductLists.Remove(lProductList);
 					m_tDb.SaveChanges();
 				}
 			}
@@ -42,7 +102,6 @@ namespace ASPMVCProducts.Controllers
 			}
 			return RedirectToAction("Index");
 		}
-
 		protected override void Dispose(bool disposing)
 		{
 			if (m_tDb != null)
@@ -52,6 +111,5 @@ namespace ASPMVCProducts.Controllers
 			}
 			base.Dispose(disposing);
 		}
-
 	}
 }
