@@ -14,11 +14,12 @@ namespace ASPMVCProducts
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                    name: "ProductEntries",
-                    url: "ProductLists/{listid}/{action}/{id}",
-                    defaults: new { controller = "ProductEntries", action = "Index", id = UrlParameter.Optional }
-            );
+			routes.MapRoute(
+							name: "ProductEntries",
+							url: "ProductLists/{listid}/{action}/{id}",
+							defaults: new { controller = "ProductEntries", action="Index", id = UrlParameter.Optional },
+							constraints: new { listid = @"\d+" }
+			);
 
 			routes.MapRoute(
 					name: "Default",

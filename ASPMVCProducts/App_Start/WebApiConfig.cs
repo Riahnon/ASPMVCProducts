@@ -16,11 +16,12 @@ namespace ASPMVCProducts
 					defaults: new { id = RouteParameter.Optional }
 			);*/
 
-            config.Routes.MapHttpRoute(
-                            name: "ProductLists",
-                            routeTemplate: "api/ProductLists/{listid}/{action}/{id}",
-                            defaults: new { controller="ProductEntriesApi", action = RouteParameter.Optional, id = RouteParameter.Optional }
-                        );
+			config.Routes.MapHttpRoute(
+											name: "ProductLists",
+											routeTemplate: "api/ProductLists/{listid}/{action}/{id}",
+											defaults: new { controller = "ProductEntries", action = RouteParameter.Optional, id = RouteParameter.Optional },
+											constraints: new { listid = @"\d+" }
+									);
 
 			config.Routes.MapHttpRoute(
 							name: "DefaultApi",

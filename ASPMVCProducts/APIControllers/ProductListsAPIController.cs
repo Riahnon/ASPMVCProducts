@@ -10,9 +10,9 @@ using WebMatrix.WebData;
 using System.Web.Security;
 using System.Net.Http.Headers;
 
-namespace ASPMVCProducts.Controllers
+namespace ASPMVCProducts.APIControllers
 {
-	public class ProductListsAPIController : ApiController
+	public class ProductListsController : ApiController
 	{
 		ProductsDb m_tDb = new ProductsDb();
 
@@ -22,73 +22,85 @@ namespace ASPMVCProducts.Controllers
 			public string Name { get; set; }
 		}
 
-        public class CreateProductListDTO
+		public class CreateProductListDTO
 		{
 			public string Name { get; set; }
 		}
-		// GET api/productsapi
+		// GET api/productlists
 		[Authorize]
-		public IEnumerable<ProductListDTO> Get()
+		public HttpResponseMessage Get()
 		{
-			
-			var lId = WebSecurity.CurrentUserId;
-			var lProductLists = m_tDb.ProductLists.Select(aProductList => new ProductListDTO
+			try
 			{
-				Id = aProductList.Id,
-				Name = aProductList.Name
-			}).ToList();
+				var lId = WebSecurity.CurrentUserId;
+				var lProductLists = m_tDb.ProductLists.Select(aProductList => new ProductListDTO
+				{
+					Id = aProductList.Id,
+					Name = aProductList.Name
+				}).ToList();
 
-			return lProductLists;
-		}
-		/*
-		// GET api/productsapi/5
-		public string Get(int id)
-		{
-				return "value";
-		}*/
-
-		// POST api/productsapi
-        [HttpPost]
-        [ActionName("create")]
-        [Authorize]
-        public HttpResponseMessage Create([FromBody]CreateProductListDTO aCreateList)
-		{
-            var lUser = m_tDb.UserProfiles.Find ( WebSecurity.CurrentUserId );
-            var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Name == aCreateList.Name);
-            if (lList == null)
-            {
-                try
-                {
-                    lList = new ProductList()
-                    {
-                        Name = aCreateList.Name,
-                        Owner = lUser,
-                        Products = new List<ProductEntry>()
-                    };
-                    m_tDb.ProductLists.Add(lList);
-                    m_tDb.SaveChanges();
-
-                    return this.Request.CreateResponse<ProductListDTO>(HttpStatusCode.Created, new ProductListDTO { Id = lList.Id, Name = aCreateList.Name });
-                }
-                catch
-                {
-                }
-                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
-                
-            }
-            return this.Request.CreateResponse<ProductListDTO>(HttpStatusCode.NotModified, new ProductListDTO { Id = lList.Id, Name = aCreateList.Name });
-		}
-        /*
-		// PUT api/productsapi/5
-		public void Put(int id, [FromBody]string value)
-		{
+				return this.Request.CreateResponse<List<ProductListDTO>>(HttpStatusCode.OK, lProductLists);
+			}
+			catch
+			{
+				return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+			}
 		}
 
-		// DELETE api/productsapi/5
-		public void Delete(int id)
+		// POST api/productlists/create
+		[HttpPost]
+		[ActionName("create")]
+		[Authorize]
+		public HttpResponseMessage Create([FromBody]CreateProductListDTO aCreateList)
 		{
+			var lUser = m_tDb.UserProfiles.Find(WebSecurity.CurrentUserId);
+			var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Name == aCreateList.Name);
+			if (lList == null)
+			{
+				try
+				{
+					lList = new ProductList()
+					{
+						Name = aCreateList.Name,
+						Owner = lUser,
+						Products = new List<ProductEntry>()
+					};
+					m_tDb.ProductLists.Add(lList);
+					m_tDb.SaveChanges();
+
+					return this.Request.CreateResponse<ProductListDTO>(HttpStatusCode.Created, new ProductListDTO { Id = lList.Id, Name = aCreateList.Name });
+				}
+				catch
+				{
+					return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+				}
+			}
+			return this.Request.CreateResponse<ProductListDTO>(HttpStatusCode.Conflict, new ProductListDTO { Id = lList.Id, Name = aCreateList.Name });
 		}
-		*/
+
+		// DELETE api/productsapi/delete/5
+		[HttpDelete]
+		[ActionName("delete")]
+		[Authorize]
+		public HttpResponseMessage Delete(int id)
+		{
+			var lUser = m_tDb.UserProfiles.Find(WebSecurity.CurrentUserId);
+			var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == id);
+			if (lList == null)
+				return this.Request.CreateResponse(HttpStatusCode.NotFound);
+			try
+			{
+				lList.Products.Clear();
+				m_tDb.ProductLists.Remove(lList);
+				m_tDb.SaveChanges();
+				return this.Request.CreateResponse(HttpStatusCode.OK);
+			}
+			catch
+			{
+				return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+			}
+		}
+
 		protected override void Dispose(bool disposing)
 		{
 			if (m_tDb != null)

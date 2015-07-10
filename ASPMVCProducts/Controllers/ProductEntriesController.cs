@@ -160,17 +160,17 @@ namespace ASPMVCProducts.Controllers
 			return new HttpNotFoundResult();
 		}
 
-		// POST: /ProductLists/Delete/5
+		// POST: /ProductLists/4/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
-		public ActionResult DeleteConfirmed(ProductEntryDeleteViewModel aModel)
+		public ActionResult DeleteConfirmed(int listid, int id)
 		{
 			if (ModelState.IsValid)
 			{
-				var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Id == aModel.ListId);
+				var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Id == listid);
 				if (lList != null)
 				{
-					var lEntry = lList.Products.Find(aEntry => aEntry.Id == aModel.EntryId);
+					var lEntry = lList.Products.Find(aEntry => aEntry.Id == id);
 					if (lEntry != null)
 					{
 						try
@@ -185,7 +185,7 @@ namespace ASPMVCProducts.Controllers
 					}
 				}
 			}
-			return RedirectToAction("Index", new { listId = aModel.ListId });
+			return RedirectToAction("Index", new { listId = listid });
 		}
 
 		protected override void Dispose(bool disposing)

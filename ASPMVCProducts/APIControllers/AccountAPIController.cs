@@ -12,9 +12,9 @@ using System.Web.Http.Dispatcher;
 using System.Web.Security;
 using WebMatrix.WebData;
 
-namespace ASPMVCProducts.Controllers
+namespace ASPMVCProducts.APIControllers
 {
-	public class AccountAPIController : ApiController
+	public class AccountController : ApiController
 	{
 		ProductsDb m_tDb = new ProductsDb();
 		public class RegisterUserDTO
