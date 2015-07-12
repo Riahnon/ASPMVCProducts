@@ -14,9 +14,7 @@ namespace ASPMVCProducts.Models
 		[Key]
 		public ProductList List { get; set; }
 		public virtual Product Product { get; set; }
-		public bool Checked { get; set; }
 		public int Ammount { get; set; }
-		public virtual List<ProductCategory> Categories { get; set; }
 		public string Comments { get; set; }
 
 	}

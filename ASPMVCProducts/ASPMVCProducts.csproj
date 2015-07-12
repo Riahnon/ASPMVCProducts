@@ -185,21 +185,18 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="APIControllers\AccountAPIController.cs" />
+    <Compile Include="APIControllers\AccountController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductEntriesController.cs" />
     <Compile Include="Controllers\ProductListsController.cs" />
-    <Compile Include="APIControllers\ProductListsAPIController.cs" />
-    <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="APIControllers\ProductListsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\ProductCategory.cs" />
     <Compile Include="Models\ProductEntry.cs" />
     <Compile Include="Models\ProductList.cs" />
     <Compile Include="Models\ProductsDb.cs" />
@@ -209,9 +206,6 @@
     <Compile Include="ViewModels\ProductEntryDeleteViewModel.cs" />
     <Compile Include="ViewModels\ProductEntryEditViewModel.cs" />
     <Compile Include="ViewModels\ProductListCreateViewModel.cs" />
-    <Compile Include="ViewModels\Products\ProductCategoriesEditModel.cs" />
-    <Compile Include="ViewModels\Products\ProductEditModel.cs" />
-    <Compile Include="ViewModels\Products\ProductsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Products.css" />

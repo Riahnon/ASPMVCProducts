@@ -63,16 +63,19 @@ namespace ASPMVCProducts.Controllers
 					var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Id == aModel.ListId);
 					if (lOwner != null && lList != null)
 					{
-						var lEntry = new ProductEntry()
-						{
-							Ammount = aModel.Ammount,
-							Comments = aModel.Comments,
-							Categories = new List<ProductCategory>(),
-							Product = lProduct,
-							List = lList,
-						};
-						lList.Products.Add(lEntry);
-						m_tDb.SaveChanges();
+                        var lEntry = lList.Products.Where(aProductEntry => aProductEntry.Product.Id == lProduct.Id).FirstOrDefault();
+                        if (lEntry == null)
+                        {
+                            lEntry = new ProductEntry()
+                            {
+                                Ammount = aModel.Ammount,
+                                Comments = aModel.Comments,
+                                Product = lProduct,
+                                List = lList,
+                            };
+                            lList.Products.Add(lEntry);
+                            m_tDb.SaveChanges();
+                        }
 					}
 				}
 				catch (DbUpdateException e)
@@ -98,7 +101,6 @@ namespace ASPMVCProducts.Controllers
 						ListId = listid,
 						EntryId = id,
 						Ammount = lEntry.Ammount,
-						Checked = lEntry.Checked,
 						Comments = lEntry.Comments
 					};
 					return View(lViewModel);
@@ -122,8 +124,6 @@ namespace ASPMVCProducts.Controllers
 						var lEntry = lList.Products.Find(aEntry => aEntry.Id == aModel.EntryId);
 						if (lEntry != null)
 						{
-
-							lEntry.Checked = aModel.Checked;
 							lEntry.Ammount = aModel.Ammount;
 							lEntry.Comments = aModel.Comments;
 							m_tDb.SaveChanges();

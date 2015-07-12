@@ -61,7 +61,6 @@ namespace ASPMVCProducts.Migrations
 					{
 						var lEntry =  new ProductEntry()
 						{
-							Checked = false,
 							Product = lProductsInList[i],
 							Ammount = 0,
 							List = lProductList,

@@ -22,10 +22,6 @@ namespace ASPMVCProducts.APIControllers
 			public string Name { get; set; }
 		}
 
-		public class CreateProductListDTO
-		{
-			public string Name { get; set; }
-		}
 		// GET api/productlists
 		[Authorize]
 		public HttpResponseMessage Get()
@@ -51,31 +47,31 @@ namespace ASPMVCProducts.APIControllers
 		[HttpPost]
 		[ActionName("create")]
 		[Authorize]
-		public HttpResponseMessage Create([FromBody]CreateProductListDTO aCreateList)
+		public HttpResponseMessage Create([FromBody]ProductListDTO aNewList)
 		{
 			var lUser = m_tDb.UserProfiles.Find(WebSecurity.CurrentUserId);
-			var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Name == aCreateList.Name);
+            var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Name == aNewList.Name);
 			if (lList == null)
 			{
 				try
 				{
 					lList = new ProductList()
 					{
-						Name = aCreateList.Name,
+                        Name = aNewList.Name,
 						Owner = lUser,
 						Products = new List<ProductEntry>()
 					};
 					m_tDb.ProductLists.Add(lList);
 					m_tDb.SaveChanges();
 
-					return this.Request.CreateResponse<ProductListDTO>(HttpStatusCode.Created, new ProductListDTO { Id = lList.Id, Name = aCreateList.Name });
+                    return this.Request.CreateResponse<ProductListDTO>(HttpStatusCode.Created, new ProductListDTO { Id = lList.Id, Name = aNewList.Name });
 				}
 				catch
 				{
 					return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
 				}
 			}
-			return this.Request.CreateResponse<ProductListDTO>(HttpStatusCode.Conflict, new ProductListDTO { Id = lList.Id, Name = aCreateList.Name });
+            return this.Request.CreateResponse<ProductListDTO>(HttpStatusCode.Conflict, new ProductListDTO { Id = lList.Id, Name = aNewList.Name });
 		}
 
 		// DELETE api/productsapi/delete/5

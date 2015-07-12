@@ -13,7 +13,7 @@
 @if(Model.Products.Count > 0 ) {
     foreach (var item in Model.Products) {
     <div class="productcategory-entry">
-        <h3>@item.Product.Name</h3>
+        <h3>@item.Product.Name (@item.Ammount)</h3>
         <div class="product-comments">
             <div>@item.Comments</div>
         </div>
