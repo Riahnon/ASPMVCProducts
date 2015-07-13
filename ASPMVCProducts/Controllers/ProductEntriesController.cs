@@ -1,5 +1,6 @@
 ﻿using ASPMVCProducts.Models;
 using ASPMVCProducts.ViewModels;
+using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -10,13 +11,14 @@ using WebMatrix.WebData;
 
 namespace ASPMVCProducts.Controllers
 {
-	[Authorize]
+	[System.Web.Mvc.Authorize]
 	public class ProductEntriesController : Controller
 	{
 		ProductsDb m_tDb = new ProductsDb();
+        IHubContext mProductsHubCtx;
 		public ProductEntriesController()
 		{
-
+            mProductsHubCtx = GlobalHost.ConnectionManager.GetHubContext<ProductsHub>();
 		}
 		//
 		// GET: /ProductEntries/1

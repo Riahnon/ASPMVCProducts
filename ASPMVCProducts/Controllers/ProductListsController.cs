@@ -1,5 +1,6 @@
 ﻿using ASPMVCProducts.Models;
 using ASPMVCProducts.ViewModels;
+using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -11,10 +12,15 @@ using WebMatrix.WebData;
 
 namespace ASPMVCProducts.Controllers
 {
-	[Authorize]
+    [System.Web.Mvc.Authorize]
 	public class ProductListsController : Controller
 	{
 		ProductsDb m_tDb = new ProductsDb();
+        IHubContext mProductsHubCtx;
+        public ProductListsController()
+		{
+            mProductsHubCtx = GlobalHost.ConnectionManager.GetHubContext<ProductsHub>();
+		}
 		//
 		// GET: /ProductLists/
 
@@ -53,6 +59,7 @@ namespace ASPMVCProducts.Controllers
 						};
 						m_tDb.ProductLists.Add(lProductList);
 						m_tDb.SaveChanges();
+                        mProductsHubCtx.Clients.All.OnServerEvent("ProductListCreated", new ASPMVCProducts.APIControllers.ProductListsController.ProductListDTO { Id = lProductList.Id, Name = lProductList.Name } );
 					}
 				}
 				catch (DbUpdateException e)
@@ -96,6 +103,7 @@ namespace ASPMVCProducts.Controllers
 					lProductList.Products.Clear();
 					m_tDb.ProductLists.Remove(lProductList);
 					m_tDb.SaveChanges();
+                    mProductsHubCtx.Clients.All.OnServerEvent("ProductListDeleted", new { Id = lProductList.Id });
 				}
 			}
 			catch (Exception e)

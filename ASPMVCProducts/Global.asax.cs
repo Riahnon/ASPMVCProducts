@@ -18,6 +18,7 @@ namespace ASPMVCProducts
         protected void Application_Start()
         {
             WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+            RouteTable.Routes.MapHubs();
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
