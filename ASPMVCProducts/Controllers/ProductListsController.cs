@@ -12,14 +12,14 @@ using WebMatrix.WebData;
 
 namespace ASPMVCProducts.Controllers
 {
-    [System.Web.Mvc.Authorize]
+	[System.Web.Mvc.Authorize]
 	public class ProductListsController : Controller
 	{
 		ProductsDb m_tDb = new ProductsDb();
-        IHubContext mProductsHubCtx;
-        public ProductListsController()
+		IHubContext mProductsHubCtx;
+		public ProductListsController()
 		{
-            mProductsHubCtx = GlobalHost.ConnectionManager.GetHubContext<ProductsHub>();
+			mProductsHubCtx = GlobalHost.ConnectionManager.GetHubContext<ProductsHub>();
 		}
 		//
 		// GET: /ProductLists/
@@ -59,12 +59,14 @@ namespace ASPMVCProducts.Controllers
 						};
 						m_tDb.ProductLists.Add(lProductList);
 						m_tDb.SaveChanges();
-                        mProductsHubCtx.Clients.All.OnServerEvent("ProductListCreated", new ASPMVCProducts.APIControllers.ProductListsController.ProductListDTO { Id = lProductList.Id, Name = lProductList.Name } );
+						var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
+						foreach (var lConnectionId in lConnectionIds)
+							mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListCreated", new { Id = lProductList.Id, Name = lProductList.Name });
 					}
 				}
 				catch (DbUpdateException e)
 				{
-
+					//No error notification implemented yet
 				}
 			}
 			return RedirectToAction("Index");
@@ -76,7 +78,7 @@ namespace ASPMVCProducts.Controllers
 		{
 			try
 			{
-				var lProductList = m_tDb.ProductLists.FirstOrDefault( aList => aList.Id == id);
+				var lProductList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == id);
 				if (lProductList == null)
 				{
 					return HttpNotFound();
@@ -85,7 +87,7 @@ namespace ASPMVCProducts.Controllers
 			}
 			catch
 			{
-
+				//No error notification implemented yet
 			}
 			return RedirectToAction("Index");
 		}
@@ -103,16 +105,14 @@ namespace ASPMVCProducts.Controllers
 					lProductList.Products.Clear();
 					m_tDb.ProductLists.Remove(lProductList);
 					m_tDb.SaveChanges();
-                    mProductsHubCtx.Clients.All.OnServerEvent("ProductListDeleted", new { Id = lProductList.Id });
+					var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
+					foreach (var lConnectionId in lConnectionIds)
+						mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListDeleted", new { Id = lProductList.Id, Name = lProductList.Name });
 				}
 			}
-			catch (Exception e)
+			catch 
 			{
-				while (e != null)
-				{
-					Debug.WriteLine(e.Message);
-					e = e.InnerException;
-				}
+				//No error notification implemented yet
 			}
 			return RedirectToAction("Index");
 		}

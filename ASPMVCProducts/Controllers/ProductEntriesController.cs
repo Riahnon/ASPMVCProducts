@@ -15,16 +15,16 @@ namespace ASPMVCProducts.Controllers
 	public class ProductEntriesController : Controller
 	{
 		ProductsDb m_tDb = new ProductsDb();
-        IHubContext mProductsHubCtx;
+		IHubContext mProductsHubCtx;
 		public ProductEntriesController()
 		{
-            mProductsHubCtx = GlobalHost.ConnectionManager.GetHubContext<ProductsHub>();
+			mProductsHubCtx = GlobalHost.ConnectionManager.GetHubContext<ProductsHub>();
 		}
 		//
 		// GET: /ProductEntries/1
 		public ActionResult Index(int listid)
 		{
-			var lList = m_tDb.ProductLists.FirstOrDefault( aList=> aList.Id == listid);
+			var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
 			if (lList != null)
 			{
 				return View(lList);
@@ -34,9 +34,9 @@ namespace ASPMVCProducts.Controllers
 
 		//
 		// GET: /ProductEntries/Create/1
-		public ActionResult Create( int listid )
+		public ActionResult Create(int listid)
 		{
-			var lList = m_tDb.ProductLists.FirstOrDefault( aList=> aList.Id == listid);
+			var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
 			if (lList != null)
 			{
 				var lModel = new ProductEntryCreateViewModel() { ListId = listid };
@@ -65,34 +65,37 @@ namespace ASPMVCProducts.Controllers
 					var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Id == aModel.ListId);
 					if (lOwner != null && lList != null)
 					{
-                        var lEntry = lList.Products.Where(aProductEntry => aProductEntry.Product.Id == lProduct.Id).FirstOrDefault();
-                        if (lEntry == null)
-                        {
-                            lEntry = new ProductEntry()
-                            {
-                                Ammount = aModel.Ammount,
-                                Comments = aModel.Comments,
-                                Product = lProduct,
-                                List = lList,
-                            };
-                            lList.Products.Add(lEntry);
-                            m_tDb.SaveChanges();
-                        }
+						var lEntry = lList.Products.Where(aProductEntry => aProductEntry.Product.Id == lProduct.Id).FirstOrDefault();
+						if (lEntry == null)
+						{
+							lEntry = new ProductEntry()
+							{
+								Ammount = aModel.Ammount,
+								Comments = aModel.Comments,
+								Product = lProduct,
+								List = lList,
+							};
+							lList.Products.Add(lEntry);
+							m_tDb.SaveChanges();
+							var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
+							foreach (var lConnectionId in lConnectionIds)
+								mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryCreated", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
+						}
 					}
 				}
 				catch (DbUpdateException e)
 				{
-
+					//No error notification implemented yet
 				}
 			}
 			return RedirectToAction("Index", new { listid = aModel.ListId });
 		}
 
-		// GET: /ProductEntries/Edit/1&2
+		// GET: /ProductEntries/1/Edit/2
 		[HttpGet]
 		public ActionResult Edit(int listid, int id)
 		{
-			var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Id == listid);
+			var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId &&  aList.Id == listid);
 			if (lList != null)
 			{
 				var lEntry = lList.Products.Find(aEntry => aEntry.Id == id);
@@ -105,6 +108,7 @@ namespace ASPMVCProducts.Controllers
 						Ammount = lEntry.Ammount,
 						Comments = lEntry.Comments
 					};
+					
 					return View(lViewModel);
 				}
 			}
@@ -129,12 +133,15 @@ namespace ASPMVCProducts.Controllers
 							lEntry.Ammount = aModel.Ammount;
 							lEntry.Comments = aModel.Comments;
 							m_tDb.SaveChanges();
+							var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
+							foreach (var lConnectionId in lConnectionIds)
+								mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryEdited", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
 						}
 					}
 				}
 				catch
 				{
-
+					//No error notification implemented yet
 				}
 			}
 			return RedirectToAction("Index", new { listid = aModel.ListId });
@@ -144,7 +151,7 @@ namespace ASPMVCProducts.Controllers
 		[HttpGet]
 		public ActionResult Delete(int listid, int id)
 		{
-			var lList = m_tDb.ProductLists.FirstOrDefault( aList=> aList.Id == listid);
+			var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId &&  aList.Id == listid);
 			if (lList != null)
 			{
 				var lEntry = lList.Products.Find(aEntry => aEntry.Id == id);
@@ -179,10 +186,13 @@ namespace ASPMVCProducts.Controllers
 						{
 							lList.Products.Remove(lEntry);
 							m_tDb.SaveChanges();
+							var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
+							foreach (var lConnectionId in lConnectionIds)
+								mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryDeleted", new { ListId = lList.Id, Id = lEntry.Id });
 						}
 						catch
 						{
-
+							//No error notification implemented yet
 						}
 					}
 				}

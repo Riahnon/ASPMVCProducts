@@ -3,30 +3,124 @@
 }
 
 $(function () {
+    var lDeletingProductList = false;
+    var lEditingProductListEntry = false;
+    var lDeletingProductListEntry = false;
+    var lEditingProductEntry = false;
+
+    var lDeleteProductListForm = document.getElementById("form-productlistDelete");
+    if (lDeleteProductListForm) {
+        lDeleteProductListForm.onsubmit = function () {
+            lDeletingProductList = true;
+        }
+    }
+
+    var lEditProductListEntryForm = document.getElementById("form-productlistentryEdit");
+    if (lEditProductListEntryForm) {
+        lEditProductListEntryForm.onsubmit = function () {
+            lEditingProductListEntry = true;
+        }
+    }
+
+    var lDeleteProductListEntryForm = document.getElementById("form-productlistentryDelete");
+    if (lDeleteProductListEntryForm) {
+        lDeleteProductListEntryForm.onsubmit = function () {
+            lDeletingProductListEntry = true;
+        }
+    }
     // Reference the auto-generated proxy for the hub.  
     var productsHub = $.connection.productsHub;
     // Create a function that the hub can call back to display messages.
     productsHub.client.onServerEvent = function (aEventName, aEventData) {
         switch (aEventName) {
             case "ProductListCreated":
-                if (document.URL.endsWith("/ProductLists")) {
-                    $('#table-productlists').append(
-                        '<tr i>' + 
+                {
+                    var lListsURL = "/ProductLists";
+                    if (document.URL.endsWith(lListsURL)) {
+                        $('#table-productlists').append(
+                            '<tr id="tr-productlist-' + aEventData.Id + '">' +
+                                '<td>' +
+                                    aEventData.Name +
+                                '</td>' +
                             '<td>' +
-                                aEventData.Name + 
+                                '<a href="/ProductLists/' + aEventData.Id + '">Edit</a>&nbsp;' +
+                                '<a href="/ProductLists/Delete/' + aEventData.Id + '">Delete</a>' +
                             '</td>' +
-                        '<td>' + 
-                            '<a href="/ProductLists/' + aEventData.Id + '">Edit</a>&nbsp;|&nbsp;&nbsp;' +
-                            '<a href="/ProductLists/Details/' + aEventData.Id + '">Details</a>&nbsp;|&nbsp;&nbsp;' +
-                            '<a href="/ProductLists/Delete/' + aEventData.Id + '">Delete</a>' +
-                        '</td>' + 
-                    '</tr>');
+                        '</tr>');
+                    }
                 }
                 break;
             case "ProductListDeleted":
-                if (document.URL.endsWith("/ProductLists")) {
-                    var lElement = document.getElementById("tr-productlist-" + aEventData.Id);
-                    lElement.parentNode.removeChild(lElement);
+                {
+                    var lListsURL = "/ProductLists";
+                    var lDeleteURL = lListsURL + "/Delete/" + aEventData.Id;
+                    var lListOperationURL = lListsURL + "/" + aEventData.Id;
+                    //Vieweing product lists
+                    if (document.URL.endsWith(lListsURL)) {
+                        var lElement = document.getElementById("tr-productlist-" + aEventData.Id);
+                        lElement.parentNode.removeChild(lElement);
+                    }//viewing the delete page of the list whit it is deleted 
+                    else if (document.URL.endsWith(lDeleteURL)) {
+                        if (lDeletingProductList == false) {
+                            alert("The list was deleted. You will be redirected to product lists page");
+                            window.location = document.URL.substring(0, document.URL.length - lDeleteURL.length) + lListsURL;
+                        }
+                    }//Working with the deleted list
+                    else if (document.URL.lastIndexOf(lListOperationURL) != -1) {
+                        alert("The product list was deleted. You will be redirected to product lists page");
+                        window.location = document.URL.substring(0, document.URL.lastIndexOf(lListOperationURL)) + lListsURL;
+                    }
+                }
+                break;
+            case "ProductListEntryCreated":
+                {
+                    var lListURL = "/ProductLists/" + aEventData.ListId;
+                    if (document.URL.endsWith(lListURL)) {
+                        $('#table-productlistentries').append(
+                            '<tr id="tr-productlistentry-' + aEventData.Id + '">' +
+                                '<td>' +
+                                    aEventData.Name +
+                                '</td>' +
+                            '<td>' +
+                                '<a href="/ProductLists/' + aEventData.ListId + '/Edit/' + aEventData.Id + '">Edit</a>&nbsp;' +
+                                '<a href="/ProductLists/' + aEventData.ListId + '/Delete/' + aEventData.Id + '">Delete</a>' +
+                            '</td>' +
+                        '</tr>');
+                    }
+                }
+                break;
+            case "ProductListEntryDeleted":
+                {
+                    var lListURL = "/ProductLists/" + aEventData.ListId;
+                    var lEditURL = lListURL + "/Edit/" + aEventData.Id;
+                    var lDeleteURL = lListURL + "/Delete/" + aEventData.Id;
+                    //Vieweing the list from which a product entry was deleted
+                    if (document.URL.endsWith(lListURL)) {
+                        var lElement = document.getElementById("tr-productlistentry-" + aEventData.Id);
+                        lElement.parentNode.removeChild(lElement);
+                    } //Editing the deleted product entry
+                    else if (document.URL.endsWith(lEditURL)) {
+                        alert("The product entry was deleted. You will be redirected to product list");
+                        window.location = document.URL.substring(0, document.URL.length - lEditURL.length) + lListURL;
+                    }
+                    else if (document.URL.endsWith(lDeleteURL)) {
+                        if (lDeletingProductListEntry == false) {
+                            alert("The product entry was deleted. You will be redirected to product list");
+                            window.location = document.URL.substring(0, document.URL.length - lDeleteURL.length) + lListURL;
+                        }
+                    }
+                }
+                break;
+            case "ProductListEntryEdited":
+                {
+                    var lListURL = "/ProductLists/" + aEventData.ListId;
+                    var lEditURL = lListURL + "/Edit/" + aEventData.Id;
+                    if (document.URL.endsWith(lEditURL)) {
+                        if (lEditingProductListEntry == false) {
+                            alert("The product entry was modified. Page will be refreshed");
+                            location.reload();
+                        }
+                    }
                 }
                 break;
         }

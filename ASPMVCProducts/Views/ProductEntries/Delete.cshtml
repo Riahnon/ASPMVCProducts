@@ -19,10 +19,10 @@
         @Html.DisplayFor(model => model.Name)
     </div>
 </fieldset>
-@using (Html.BeginForm()) {
+<form id="form-productlistentryDelete" action="/ProductLists/@Model.ListId/Delete/@Model.EntryId" method="post">
     @Html.AntiForgeryToken()
     <p>
         <input type="submit" value="Delete" /> |
         @Html.ActionLink("Back to List", "Index")
     </p>
-}
+</form>

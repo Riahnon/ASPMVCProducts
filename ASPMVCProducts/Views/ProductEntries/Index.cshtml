@@ -9,27 +9,29 @@
 <p>
     @Html.ActionLink("Create New", "Create", new { listid = Model.Id } )
 </p>
-
-@if(Model.Products.Count > 0 ) {
-    foreach (var item in Model.Products) {
-    <div class="productcategory-entry">
-        <h3>@item.Product.Name (@item.Ammount)</h3>
-        <div class="product-comments">
-            <div>@item.Comments</div>
-        </div>
-        @Html.ActionLink("Edit", "Edit", "ProductEntries", new { listid=Model.Id, id=item.Id }, null)
-        @Html.ActionLink("Delete", "Delete", "ProductEntries", new { listid=Model.Id, id=item.Id }, null)
-
-       @* @Html.ActionLink("Edit", "Edit", new { id = item.Id }) &nbsp;|
-            <form action="/ProductList/Delete?productid=@item.Id" method="post">
-                @Html.AntiForgeryToken()
-                <input type="submit" value="Delete" />
-            </form>*@
-    </div>
+<table id="table-productlistentries">
     
+@if(Model.Products.Count > 0 ) {
+    <tr>
+        <th>
+            Product name
+        </th>
+        <th></th>
+    </tr>
+    foreach (var item in Model.Products) {
+    <tr id="tr-productlistentry-@item.Id">
+        <td>
+            @item.Product.Name
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", "ProductEntries", new { listid=Model.Id, id=item.Id }, null)
+            @Html.ActionLink("Delete", "Delete", "ProductEntries", new { listid=Model.Id, id=item.Id }, null)
+        </td>
+    </tr>
     }
 }
 else
 {
     <h2>[Empty list]</h2>
 }
+</table>

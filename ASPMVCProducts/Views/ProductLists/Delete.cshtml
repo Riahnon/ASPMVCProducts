@@ -17,10 +17,11 @@
         @Html.DisplayFor(model => model.Name)
     </div>
 </fieldset>
-@using (Html.BeginForm()) {
+<form id="form-productlistDelete" action="/ProductLists/Delete/@Model.Id" method="post">
     @Html.AntiForgeryToken()
     <p>
         <input type="submit" value="Delete" /> |
         @Html.ActionLink("Back to List", "Index")
     </p>
-}
+</form>
+

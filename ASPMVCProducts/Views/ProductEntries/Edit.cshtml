@@ -6,7 +6,7 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm()) {
+<form id="form-productlistentryEdit" action="/ProductLists/@Model.ListId/Edit/@Model.EntryId" method="post">
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -36,7 +36,7 @@
             <input type="submit" value="Save" />
         </p>
     </fieldset>
-}
+</form>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
