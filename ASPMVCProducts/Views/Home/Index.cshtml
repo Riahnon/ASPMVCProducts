@@ -2,8 +2,44 @@
 @{
     ViewBag.Title = "Index";
 }
+<div>
+<h1>Welcome!</h1>
 
-<h2>Main</h2>
+<h3>This is just a little experiment involving ASP MVC, Entity Framework, Web API and SignalR.</h3>
+
+
+<ul>
+    <li>
+    The site uses exposes a master-detail view consisting on a set of product lists each of which contains a set of products.
+    </li>
+    <br />
+    <li>
+    The product lists and their contents can be accessed consumed using a web browser or a client application (see below). 
+    </li>
+    <br />
+    <li>
+    The key point of the experiment is synchronization. Contents displayed are synchronized in real time across all web browser and client applications.
+    Several browser and/or browser-tabs and/or client-applications can access and perform modifications at the same time.
+    The changes made by any them will be trasmited to the rest in real time.
+    </li>
+
+    <br />
+    <li>
+    Prior to be able to operate users must create an account and login. Please note that due to restrictions of Azure Free Subscription, <strong>SSL is not available</strong> 
+    therefore do not use any user credentials that you use somewhere else, since they will be transmited as plain text.
+    </li>
+</ul>
+</div>
+
+
+<footer>
+    <h4>DISCLAIMER: This site is developed solely for learning and experimenting purposes. It may contain unfinished, buggy and/or poor quality contents.</h4>
+</footer>
+
+
+
+
+
 
 
 
