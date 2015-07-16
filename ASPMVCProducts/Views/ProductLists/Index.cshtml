@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Lists</h2>
+<h1>Lists</h1>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -24,7 +24,7 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Index", "ProductEntries", (object)new { listid=item.Id }, null)
+            @Html.ActionLink("View", "Index", "ProductEntries", (object)new { listid=item.Id }, null)
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>

@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Index";
 }
-<div>
+<div id="div-homepage">
 <h1>Welcome!</h1>
 
 <h3>This is just a little experiment involving ASP MVC, Entity Framework, Web API and SignalR.</h3>
@@ -10,11 +10,11 @@
 
 <ul>
     <li>
-    The site uses exposes a master-detail view consisting on a set of product lists each of which contains a set of products.
+    The site uses exposes a simple master-detail view consisting on a set of product lists each of which contains a set of products.
     </li>
     <br />
     <li>
-    The product lists and their contents can be accessed consumed using a web browser or a client application (see below). 
+    The product lists and their contents can be accessed using a web browser or a @Html.ActionLink("client application", "ClientApps", "Home"). 
     </li>
     <br />
     <li>
@@ -30,11 +30,6 @@
     </li>
 </ul>
 </div>
-
-
-<footer>
-    <h4>DISCLAIMER: This site is developed solely for learning and experimenting purposes. It may contain unfinished, buggy and/or poor quality contents.</h4>
-</footer>
 
 
 
