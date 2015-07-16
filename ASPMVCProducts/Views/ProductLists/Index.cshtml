@@ -18,14 +18,15 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
     <tr id="tr-productlist-@item.Id">
         <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("View", "Index", "ProductEntries", (object)new { listid=item.Id }, null)
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("View", "Index", "ProductEntries", (object)new { listid = item.Id }, null)
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
         </td>
     </tr>
 }

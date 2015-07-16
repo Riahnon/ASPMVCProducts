@@ -18,9 +18,9 @@ namespace ASPMVCProducts.Controllers
             return View();
         }
 
-				public ActionResult ClientApps()
-				{
-					return View();
-				}
+        public ActionResult ClientApps()
+        {
+            return View();
+        }
     }
 }

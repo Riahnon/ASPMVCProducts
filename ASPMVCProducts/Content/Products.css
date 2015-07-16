@@ -1,18 +1,15 @@
 ﻿
 
-.product-entry form,.product-entry input,.productcategory-entry form,.productcategory-entry input  {
+.product-entry form, .product-entry input, .productcategory-entry form, .productcategory-entry input {
     background-color: transparent;
-    color:blue;
+    color: blue;
     border: none;
     cursor: pointer;
-    display:inline;
-    margin:0px;
+    display: inline;
+    margin: 0px;
 }
 
 
-.product-entry input,.productcategory-entry input   {
+.product-entry input, .productcategory-entry input {
     text-decoration: underline;
 }
-
-
-

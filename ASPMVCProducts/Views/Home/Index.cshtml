@@ -1,34 +1,29 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 <div id="div-homepage">
-<h1>Welcome!</h1>
+    <h1>Welcome!</h1>
 
-<h3>This is just a little experiment involving ASP MVC, Entity Framework, Web API and SignalR.</h3>
+    <h3>This is just a little experiment involving ASP MVC, Entity Framework, Web API and SignalR.</h3>
 
 
-<ul>
-    <li>
-    The site uses exposes a simple master-detail view consisting on a set of product lists each of which contains a set of products.
-    </li>
-    <br />
-    <li>
-    The product lists and their contents can be accessed using a web browser or a @Html.ActionLink("client application", "ClientApps", "Home"). 
-    </li>
-    <br />
-    <li>
-    The key point of the experiment is synchronization. Contents displayed are synchronized in real time across all web browser and client applications.
+    <ul>
+        <li>The site uses exposes a simple master-detail view consisting on a set of product lists each of which contains a set of products.
+        </li>
+        <li>The product lists and their contents can be accessed using a web browser or a @Html.ActionLink("client application", "ClientApps", "Home"). 
+        </li>
+        <li>The key point of the experiment is synchronization. Contents displayed are synchronized in real time across all web browser and client applications.
     Several browser and/or browser-tabs and/or client-applications can access and perform modifications at the same time.
     The changes made by any them will be trasmited to the rest in real time.
-    </li>
-
-    <br />
-    <li>
-    Prior to be able to operate users must create an account and login. Please note that due to restrictions of Azure Free Subscription, <strong>SSL is not available</strong> 
-    therefore do not use any user credentials that you use somewhere else, since they will be transmited as plain text.
-    </li>
-</ul>
+        </li>
+        <li>Prior to be able to operate users must create an account and login. Please note that due to restrictions of Azure Free Subscription, <strong>SSL is not available</strong>
+            therefore do not use any user credentials that you use somewhere else, since they will be transmited as plain text.
+        </li>
+        <li>
+            Alltogether can more or less be considered a multiplatform shopping list service in which the user can view and edit its list in real time from several devices.
+            Sharing user credentials several persons could share a common real time synchronized shopping list.
+        </li>
+    </ul>
 </div>
 
 

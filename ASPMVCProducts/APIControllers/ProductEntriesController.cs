@@ -10,158 +10,142 @@ using WebMatrix.WebData;
 
 namespace ASPMVCProducts.APIControllers
 {
-	public class ProductEntriesController : ApiController
-	{
-		ProductsDb m_tDb = new ProductsDb();
-		IHubContext mProductsHubCtx;
+    public class ProductEntriesController : ApiController
+    {
+        ProductsDb m_tDb = new ProductsDb();
+        IHubContext mProductsHubCtx;
 
-		public class ProductEntryDTO
-		{
-			public int Id { get; set; }
-			public string ProductName { get; set; }
-			public int Ammount { get; set; }
-			public string Comments { get; set; }
-		}
+        public class ProductEntryDTO
+        {
+            public int Id { get; set; }
+            public string ProductName { get; set; }
+            public int Ammount { get; set; }
+            public string Comments { get; set; }
+        }
 
-		public ProductEntriesController()
-		{
-			mProductsHubCtx = GlobalHost.ConnectionManager.GetHubContext<ProductsHub>();
-		}
+        public ProductEntriesController()
+        {
+            mProductsHubCtx = GlobalHost.ConnectionManager.GetHubContext<ProductsHub>();
+        }
 
-		// GET api/productlists/5/productentries
-		[System.Web.Mvc.Authorize]
-		public HttpResponseMessage Get(int listid)
-		{
-			var lId = WebSecurity.CurrentUserId;
-			var lProductList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
-			if (lProductList == null)
-				return this.Request.CreateResponse(HttpStatusCode.NotFound);
+        // GET api/productlists/5/productentries
+        [System.Web.Mvc.Authorize]
+        public HttpResponseMessage Get(int listid)
+        {
+            var lId = WebSecurity.CurrentUserId;
+            var lProductList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
+            if (lProductList == null)
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
 
-			var lEntries = lProductList.Products.Select(aProductEntry => new ProductEntryDTO()
-			{
-				Id = aProductEntry.Id,
-				ProductName = aProductEntry.Product.Name,
-				Ammount = aProductEntry.Ammount,
-				Comments = aProductEntry.Comments
-			}).ToList();
-			return this.Request.CreateResponse<List<ProductEntryDTO>>(HttpStatusCode.OK, lEntries);
-		}
+            var lEntries = lProductList.Products.Select(aProductEntry => new ProductEntryDTO()
+            {
+                Id = aProductEntry.Id,
+                ProductName = aProductEntry.Product.Name,
+                Ammount = aProductEntry.Ammount,
+                Comments = aProductEntry.Comments
+            }).ToList();
+            return this.Request.CreateResponse<List<ProductEntryDTO>>(HttpStatusCode.OK, lEntries);
+        }
 
-		// POST api/productlists/5/create
-		[HttpPost]
-		[ActionName("create")]
-		[System.Web.Mvc.Authorize]
-		public HttpResponseMessage Create(int listid, [FromBody]ProductEntryDTO aEntry)
-		{
-			var lUser = m_tDb.UserProfiles.Find(WebSecurity.CurrentUserId);
-			var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
-			if (lList == null)
-				return this.Request.CreateResponse(HttpStatusCode.NotFound);
+        // POST api/productlists/5/create
+        [HttpPost]
+        [ActionName("create")]
+        [System.Web.Mvc.Authorize]
+        public HttpResponseMessage Create(int listid, [FromBody]ProductEntryDTO aEntry)
+        {
+            var lUser = m_tDb.UserProfiles.Find(WebSecurity.CurrentUserId);
+            var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
+            if (lList == null)
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
 
-			try
-			{
-				var lProduct = m_tDb.Products.Where(aProduct => aProduct.Name == aEntry.ProductName).FirstOrDefault();
-				if (lProduct == null)
-				{
-					lProduct = new Product() { Name = aEntry.ProductName };
-					m_tDb.Products.Add(lProduct);
-				}
-				var lEntry = lList.Products.Where(aProductEntry => aProductEntry.Product.Id == lProduct.Id).FirstOrDefault();
-				if (lEntry == null)
-				{
-					lEntry = new ProductEntry()
-					{
-						Product = lProduct,
-						List = lList,
-					};
-					lList.Products.Add(lEntry);
-					m_tDb.SaveChanges();
-					var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
-					foreach (var lConnectionId in lConnectionIds)
-						mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryCreated", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
-					return this.Request.CreateResponse(HttpStatusCode.Created,
-							new ProductEntryDTO() { Id = lEntry.Id, ProductName = lProduct.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
-				}
-				return this.Request.CreateResponse<ProductEntryDTO>(HttpStatusCode.Conflict,
-						new ProductEntryDTO() { Id = lEntry.Id, ProductName = lProduct.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
-			}
-			catch
-			{
-				return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
-			}
-		}
+            var lProduct = m_tDb.Products.Where(aProduct => aProduct.Name == aEntry.ProductName).FirstOrDefault();
+            if (lProduct == null)
+            {
+                lProduct = new Product() { Name = aEntry.ProductName };
+                m_tDb.Products.Add(lProduct);
+            }
+            var lEntry = lList.Products.Where(aProductEntry => aProductEntry.Product.Id == lProduct.Id).FirstOrDefault();
+            if (lEntry == null)
+            {
+                lEntry = new ProductEntry()
+                {
+                    Product = lProduct,
+                    List = lList,
+                };
+                lList.Products.Add(lEntry);
+                m_tDb.SaveChanges();
+                var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
+                foreach (var lConnectionId in lConnectionIds)
+                    mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryCreated", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
+                return this.Request.CreateResponse(HttpStatusCode.Created,
+                        new ProductEntryDTO() { Id = lEntry.Id, ProductName = lProduct.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
+            }
+            return this.Request.CreateResponse<ProductEntryDTO>(HttpStatusCode.Conflict,
+                    new ProductEntryDTO() { Id = lEntry.Id, ProductName = lProduct.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
 
-		// POST api/productlists/5/edit/4
-		[HttpPut]
-		[ActionName("edit")]
-		[System.Web.Mvc.Authorize]
-		public HttpResponseMessage Edit(int listid, int id, [FromBody]ProductEntryDTO aEntry)
-		{
-			var lUser = m_tDb.UserProfiles.Find(WebSecurity.CurrentUserId);
-			var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
-			if (lList == null)
-				return this.Request.CreateResponse(HttpStatusCode.NotFound);
+        }
 
-			var lEntry = lList.Products.FirstOrDefault(aProduct => aProduct.Id == id);
-			if (lEntry == null)
-				return this.Request.CreateResponse(HttpStatusCode.NotFound);
+        // POST api/productlists/5/edit/4
+        [HttpPut]
+        [ActionName("edit")]
+        [System.Web.Mvc.Authorize]
+        public HttpResponseMessage Edit(int listid, int id, [FromBody]ProductEntryDTO aEntry)
+        {
+            var lUser = m_tDb.UserProfiles.Find(WebSecurity.CurrentUserId);
+            var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
+            if (lList == null)
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
 
-			try
-			{
-				lEntry.Ammount = aEntry.Ammount;
-				lEntry.Comments = aEntry.Comments;
-				m_tDb.SaveChanges();
-				var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
-				foreach (var lConnectionId in lConnectionIds)
-					mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryEdited", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
-				return this.Request.CreateResponse(HttpStatusCode.OK);
-			}
-			catch
-			{
-				return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
-			}
-		}
+            var lEntry = lList.Products.FirstOrDefault(aProduct => aProduct.Id == id);
+            if (lEntry == null)
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+
+            lEntry.Ammount = aEntry.Ammount;
+            lEntry.Comments = aEntry.Comments;
+            m_tDb.SaveChanges();
+            var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
+            foreach (var lConnectionId in lConnectionIds)
+                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryEdited", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
+            return this.Request.CreateResponse(HttpStatusCode.OK);
+
+        }
 
 
-		// DELETE api/productlists/5/delete/5
-		[HttpDelete]
-		[ActionName("delete")]
-		[System.Web.Mvc.Authorize]
-		public HttpResponseMessage Delete(int listid, int id)
-		{
-			var lUser = m_tDb.UserProfiles.Find(WebSecurity.CurrentUserId);
-			var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
-			if (lList == null)
-				return this.Request.CreateResponse(HttpStatusCode.NotFound);
+        // DELETE api/productlists/5/delete/5
+        [HttpDelete]
+        [ActionName("delete")]
+        [System.Web.Mvc.Authorize]
+        public HttpResponseMessage Delete(int listid, int id)
+        {
+            var lUser = m_tDb.UserProfiles.Find(WebSecurity.CurrentUserId);
+            var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
+            if (lList == null)
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
 
-			var lEntry = lList.Products.FirstOrDefault(aProduct => aProduct.Id == id);
-			if (lEntry == null)
-				return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            var lEntry = lList.Products.FirstOrDefault(aProduct => aProduct.Id == id);
+            if (lEntry == null)
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
 
-			try
-			{
-				lList.Products.Remove(lEntry);
-				var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
-				foreach( var lConnectionId in lConnectionIds)
-					mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryDeleted", new { ListId = lList.Id, Id = lEntry.Id });
-				return this.Request.CreateResponse(HttpStatusCode.OK);
-			}
-			catch
-			{
-				return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
-			}
-		}
 
-		protected override void Dispose(bool disposing)
-		{
-			if (m_tDb != null)
-			{
-				m_tDb.Dispose();
-				m_tDb = null;
-			}
-			base.Dispose(disposing);
-		}
-	}
+            lList.Products.Remove(lEntry);
+            m_tDb.SaveChanges();
+
+            var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
+            foreach (var lConnectionId in lConnectionIds)
+                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryDeleted", new { ListId = lList.Id, Id = lEntry.Id });
+            return this.Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (m_tDb != null)
+            {
+                m_tDb.Dispose();
+                m_tDb = null;
+            }
+            base.Dispose(disposing);
+        }
+    }
 
 
 }

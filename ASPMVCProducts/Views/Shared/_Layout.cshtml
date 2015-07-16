@@ -1,35 +1,35 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Product list demo</title>
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    </head>
-    <body>
-        
-        <header>
-            <section id="layout-login">
-                @Html.Partial("_LoginPartial")
-            </section>
-        </header>
-        <aside id="layout-aside">
-                <ul id="menu">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Product lists", "Index", "ProductLists")</li>
-                    <li>@Html.ActionLink("Client apps", "ClientApps", "Home")</li>
-                </ul>
-            </aside>
-        <div id="layout-body">
-            @RenderBody()
-        </div>
-        
-        @Scripts.Render("~/bundles/jquery")
-        <script src="~/Scripts/jquery.signalR-1.1.4.js"></script>
-        <script src="~/signalr/hubs"></script>
-        <script src="~/Scripts/productshub.js"></script>
-        @RenderSection("scripts", required: false)
-    </body>
-    
+<head>
+    <meta charset="utf-8" />
+    <title>Product list demo</title>
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+    <header>
+        <section id="layout-login">
+            @Html.Partial("_LoginPartial")
+        </section>
+    </header>
+    <aside id="layout-aside">
+        <ul id="menu">
+            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            <li>@Html.ActionLink("Product lists", "Index", "ProductLists")</li>
+            <li>@Html.ActionLink("Client apps", "ClientApps", "Home")</li>
+        </ul>
+    </aside>
+    <div id="layout-body">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/jquery.signalR-1.1.4.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/productshub.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+
 </html>

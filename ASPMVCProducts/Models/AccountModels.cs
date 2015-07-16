@@ -8,7 +8,7 @@ using System.Web.Security;
 
 namespace ASPMVCProducts.Models
 {
-    
+
 
     public class RegisterExternalLoginModel
     {

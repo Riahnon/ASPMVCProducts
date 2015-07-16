@@ -7,12 +7,12 @@ using System.Web;
 
 namespace ASPMVCProducts.Models
 {
-	public class Product
-	{
-		[Key]
-		public int Id { get; set; }
-		[Index(IsUnique = true)]
-		[StringLength(256)] 
-		public string Name { get; set; }
-	}
+    public class Product
+    {
+        [Key]
+        public int Id { get; set; }
+        [Index(IsUnique = true)]
+        [StringLength(256)]
+        public string Name { get; set; }
+    }
 }

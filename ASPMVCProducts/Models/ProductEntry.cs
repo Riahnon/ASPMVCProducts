@@ -7,15 +7,15 @@ using System.Web;
 
 namespace ASPMVCProducts.Models
 {
-	public class ProductEntry
-	{
-		[Key]
-		public int Id { get; set; }
-		[Key]
-		public ProductList List { get; set; }
-		public virtual Product Product { get; set; }
-		public int Ammount { get; set; }
-		public string Comments { get; set; }
+    public class ProductEntry
+    {
+        [Key]
+        public int Id { get; set; }
+        [Key]
+        public ProductList List { get; set; }
+        public virtual Product Product { get; set; }
+        public int Ammount { get; set; }
+        public string Comments { get; set; }
 
-	}
+    }
 }
