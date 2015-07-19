@@ -13,8 +13,7 @@ namespace ASPMVCProducts.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(ASPMVCProducts.Models.ProductsDb context)
@@ -22,59 +21,14 @@ namespace ASPMVCProducts.Migrations
             SeedMembership();
             var lDefaultOwner = context.UserProfiles.Where(aUserProfile => aUserProfile.UserName == "gcastro").FirstOrDefault();
             var lRnd = new Random();
-            Product[] lProducts = null;
-            if (context.Products.Count() == 0)
-            {
-                lProducts = new Product[lRnd.Next(10) + 5];
-                for (int i = 0; i < lProducts.Length; ++i)
-                {
-                    //Product is created
-                    lProducts[i] = new Product()
-                    {
-                        Name = _GenerateRandomString(10, lRnd)
-                    };
-                }
-
-                context.Products.AddOrUpdate(lProducts);
-            }
-            else
-            {
-                lProducts = context.Products.ToArray();
-            }
-
-
-            if (lDefaultOwner != null && context.ProductLists.Count(aList => aList.Owner.UserId == lDefaultOwner.UserId) == 0)
-            {
-                var lProductList = new ProductList()
-                {
-                    Name = "Default List",
-                    Owner = lDefaultOwner,
-                    Products = new List<ProductEntry>(),
-                };
-
-                var lProductCount = 3 + lRnd.Next(lProducts.Length - 3);
-                var lProductsInList = lProducts.ToList();
-                while (lProductsInList.Count > lProductCount)
-                    lProductsInList.RemoveAt(lRnd.Next(lProductsInList.Count));
-
-                for (int i = 0; i < lProductsInList.Count; ++i)
-                {
-                    var lEntry = new ProductEntry()
-                    {
-                        Product = lProductsInList[i],
-                        Ammount = 0,
-                        List = lProductList,
-                    };
-                    lProductList.Products.Add(lEntry);
-                }
-                context.ProductLists.AddOrUpdate(lProductList);
-            }
         }
 
         private void SeedMembership()
         {
-            WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
-
+            if (!WebSecurity.Initialized)
+            {
+                WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+            }
             var lRoles = (SimpleRoleProvider)Roles.Provider;
             var lMembership = (SimpleMembershipProvider)Membership.Provider;
 

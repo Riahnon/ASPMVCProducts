@@ -43,10 +43,10 @@ namespace ASPMVCProducts
             _AddCurrentConnectionId();
             return base.OnConnected();
         }
-        public override Task OnDisconnected()
+        public override Task OnDisconnected(bool stopCalled)
         {
             _RemoveCurrentConnectionId();
-            return base.OnDisconnected();
+            return base.OnDisconnected(stopCalled);
         }
         public override Task OnReconnected()
         {

@@ -43,7 +43,7 @@ $(function () {
                                     aEventData.Name +
                                 '</td>' +
                             '<td>' +
-                                '<a href="/ProductLists/' + aEventData.Id + '">Edit</a>&nbsp;' +
+                                '<a href="/ProductLists/' + aEventData.Id + '">View</a>&nbsp;' +
                                 '<a href="/ProductLists/Delete/' + aEventData.Id + '">Delete</a>' +
                             '</td>' +
                         '</tr>');

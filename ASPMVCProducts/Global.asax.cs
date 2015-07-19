@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ASPMVCProducts.Migrations;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -17,8 +19,13 @@ namespace ASPMVCProducts
     {
         protected void Application_Start()
         {
-            WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
-            RouteTable.Routes.MapHubs();
+            var lMigrator = new DbMigrator(new Configuration());
+            lMigrator.Update();
+            if (!WebSecurity.Initialized)
+            {
+                WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+            }
+            //RouteTable.Routes.MapHubs();
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);

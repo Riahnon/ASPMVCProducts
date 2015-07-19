@@ -28,7 +28,8 @@
             @Html.LabelFor(model => model.Comments)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Comments)
+           @* @Html.EditorFor(model => model.Comments)*@
+            <textarea id="Comments" class="valid" name="Comments">@Model.Comments</textarea>
             @Html.ValidationMessageFor(model => model.Comments)
         </div>
 
