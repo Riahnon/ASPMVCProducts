@@ -8,22 +8,28 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-
-    <header>
-        <section id="layout-login">
-            @Html.Partial("_LoginPartial")
-        </section>
-    </header>
-    <aside id="layout-aside">
-        <ul id="menu">
-            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-            <li>@Html.ActionLink("Product lists", "Index", "ProductLists")</li>
-            <li>@Html.ActionLink("Client apps", "ClientApps", "Home")</li>
-        </ul>
-    </aside>
-    <div id="layout-body">
-        @RenderBody()
-    </div>
+    <table id="table-base">
+        <tr id="tr-login">  
+           <td ></td>
+           <td id="layout-login">
+               @Html.Partial("_LoginPartial")
+           </td>
+        </tr>
+        <tr>
+            <td id="layout-aside">
+                <ul id="menu">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Product lists", "Index", "ProductLists")</li>
+                    <li>@Html.ActionLink("Client apps", "ClientApps", "Home")</li>
+                </ul>
+            </td>
+            <td >
+                <div id="div-body">
+                    @RenderBody()
+                </div>
+            </td>
+        </tr>
+    </table>
 
     @Scripts.Render("~/bundles/jquery")
     <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>

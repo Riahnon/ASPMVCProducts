@@ -10,7 +10,7 @@ namespace ASPMVCProducts.ViewModels
     {
         public int ListId { get; set; }
         public string Name { get; set; }
-        public int Ammount { get; set; }
+        public int Amount { get; set; }
         public string Comments { get; set; }
     }
 }

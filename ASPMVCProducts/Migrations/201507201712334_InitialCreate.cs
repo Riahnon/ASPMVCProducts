@@ -33,7 +33,7 @@ namespace ASPMVCProducts.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Ammount = c.Int(nullable: false),
+                        Amount = c.Int(nullable: false),
                         Comments = c.String(),
                         List_Id = c.Int(),
                         Product_Id = c.Int(),

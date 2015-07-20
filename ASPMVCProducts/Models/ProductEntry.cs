@@ -14,7 +14,7 @@ namespace ASPMVCProducts.Models
         [Key]
         public ProductList List { get; set; }
         public virtual Product Product { get; set; }
-        public int Ammount { get; set; }
+        public int Amount { get; set; }
         public string Comments { get; set; }
 
     }

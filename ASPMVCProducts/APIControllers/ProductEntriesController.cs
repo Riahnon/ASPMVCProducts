@@ -19,7 +19,7 @@ namespace ASPMVCProducts.APIControllers
         {
             public int Id { get; set; }
             public string ProductName { get; set; }
-            public int Ammount { get; set; }
+            public int Amount { get; set; }
             public string Comments { get; set; }
         }
 
@@ -41,7 +41,7 @@ namespace ASPMVCProducts.APIControllers
             {
                 Id = aProductEntry.Id,
                 ProductName = aProductEntry.Product.Name,
-                Ammount = aProductEntry.Ammount,
+                Amount = aProductEntry.Amount,
                 Comments = aProductEntry.Comments
             }).ToList();
             return this.Request.CreateResponse<List<ProductEntryDTO>>(HttpStatusCode.OK, lEntries);
@@ -76,12 +76,12 @@ namespace ASPMVCProducts.APIControllers
                 m_tDb.SaveChanges();
                 var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
                 foreach (var lConnectionId in lConnectionIds)
-                    mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryCreated", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
+                    mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryCreated", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Amount = lEntry.Amount, Comments = lEntry.Comments });
                 return this.Request.CreateResponse(HttpStatusCode.Created,
-                        new ProductEntryDTO() { Id = lEntry.Id, ProductName = lProduct.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
+                        new ProductEntryDTO() { Id = lEntry.Id, ProductName = lProduct.Name, Amount = lEntry.Amount, Comments = lEntry.Comments });
             }
             return this.Request.CreateResponse<ProductEntryDTO>(HttpStatusCode.Conflict,
-                    new ProductEntryDTO() { Id = lEntry.Id, ProductName = lProduct.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
+                    new ProductEntryDTO() { Id = lEntry.Id, ProductName = lProduct.Name, Amount = lEntry.Amount, Comments = lEntry.Comments });
 
         }
 
@@ -100,12 +100,12 @@ namespace ASPMVCProducts.APIControllers
             if (lEntry == null)
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);
 
-            lEntry.Ammount = aEntry.Ammount;
+            lEntry.Amount = aEntry.Amount;
             lEntry.Comments = aEntry.Comments;
             m_tDb.SaveChanges();
             var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
             foreach (var lConnectionId in lConnectionIds)
-                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryEdited", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
+                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryEdited", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Amount = lEntry.Amount, Comments = lEntry.Comments });
             return this.Request.CreateResponse(HttpStatusCode.OK);
 
         }

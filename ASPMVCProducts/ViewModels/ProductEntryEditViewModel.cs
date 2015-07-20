@@ -11,7 +11,7 @@ namespace ASPMVCProducts.ViewModels
         public int ListId { get; set; }
         public int EntryId { get; set; }
         public bool Checked { get; set; }
-        public int Ammount { get; set; }
+        public int Amount { get; set; }
         public string Comments { get; set; }
     }
 }

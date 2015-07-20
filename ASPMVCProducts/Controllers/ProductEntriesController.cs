@@ -70,7 +70,7 @@ namespace ASPMVCProducts.Controllers
                         {
                             lEntry = new ProductEntry()
                             {
-                                Ammount = aModel.Ammount,
+                                Amount = aModel.Amount,
                                 Comments = aModel.Comments,
                                 Product = lProduct,
                                 List = lList,
@@ -79,7 +79,7 @@ namespace ASPMVCProducts.Controllers
                             m_tDb.SaveChanges();
                             var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
                             foreach (var lConnectionId in lConnectionIds)
-                                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryCreated", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
+                                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryCreated", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Amount = lEntry.Amount, Comments = lEntry.Comments });
                         }
                     }
                 }
@@ -105,7 +105,7 @@ namespace ASPMVCProducts.Controllers
                     {
                         ListId = listid,
                         EntryId = id,
-                        Ammount = lEntry.Ammount,
+                        Amount = lEntry.Amount,
                         Comments = lEntry.Comments
                     };
 
@@ -130,12 +130,12 @@ namespace ASPMVCProducts.Controllers
                         var lEntry = lList.Products.Find(aEntry => aEntry.Id == aModel.EntryId);
                         if (lEntry != null)
                         {
-                            lEntry.Ammount = aModel.Ammount;
+                            lEntry.Amount = aModel.Amount;
                             lEntry.Comments = aModel.Comments;
                             m_tDb.SaveChanges();
                             var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
                             foreach (var lConnectionId in lConnectionIds)
-                                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryEdited", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Ammount = lEntry.Ammount, Comments = lEntry.Comments });
+                                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryEdited", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Amount = lEntry.Amount, Comments = lEntry.Comments });
                         }
                     }
                 }

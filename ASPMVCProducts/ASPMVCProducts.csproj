@@ -220,9 +220,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201507191913171_InitialCreate.cs" />
-    <Compile Include="Migrations\201507191913171_InitialCreate.Designer.cs">
-      <DependentUpon>201507191913171_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201507201712334_InitialCreate.cs" />
+    <Compile Include="Migrations\201507201712334_InitialCreate.Designer.cs">
+      <DependentUpon>201507201712334_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -240,7 +240,6 @@
     <Compile Include="ViewModels\ProductListCreateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Products.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -378,8 +377,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201507191913171_InitialCreate.resx">
-      <DependentUpon>201507191913171_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201507201712334_InitialCreate.resx">
+      <DependentUpon>201507201712334_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

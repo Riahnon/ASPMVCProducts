@@ -61,25 +61,44 @@ h5, h6 {
     font-size: 1em;
 }
 
-#layout-body {
-    margin-top: 25px;
-    margin-left: 175px;
+#table-base {
+    position:absolute;
+    top:10px;
+    left:0;
+    right:0;
+    bottom:0;
+    width:100%;
+    height:100%;
+    }
+
+#tr-login {
+    height:20px;
+}
+    #tr-login > td:first-child {
+        background-color: #eeeeee;
+    }
+
+#div-body {
+    margin-left: 15px;
+    height:100%;
 }
 
 #div-homepage {
     width: 65%;
 }
-#div-homepage > h3  {
-    margin-bottom: 35px;
+    #div-homepage > h3  {
+        margin-bottom: 35px;
 
-}
-#div-homepage > ul > li {
-    margin-bottom: 25px;
-}
+    }
+    #div-homepage > ul > li {
+        margin-bottom: 25px;
+    }
+
 #layout-login {
     margin: 5px;
     margin-right: 15px;
     float: right;
+    text-align:right;
 }
 
     #layout-login ul {
@@ -94,13 +113,37 @@ h5, h6 {
 
 #layout-aside {
     background-color: #eeeeee;
-    float: left;
+    /*float: left;*/
     width: 150px;
-    padding-top: 50px;
-    position: absolute;
-    top: 10px;
-    bottom: 0px;
+    text-align:start;
+    vertical-align:top;
+    /*padding-top: 50px;*/
+    /*position: absolute;*/
+    /*top: 10px;*/
+    /*bottom: 0px;*/
 }
+#layout-aside > ul {
+    font-size: 1.3em;
+    font-weight: 600;
+    margin: 0 0 5px;
+    padding: 0;
+}
+
+    #layout-aside > ul > li {
+        list-style: none;
+        padding: 2px 0 2px 20px;
+        background: url("../Images/bullet.png") no-repeat 0 50%;
+    }
+
+        #layout-aside > ul > li > a {
+            background: none;
+            color: #999;
+            text-decoration: none;
+        }
+
+            #layout-aside > ul > li > a:hover {
+                color: #333;
+            }
 
 #div-client-apps > h4 {
     margin-left: 15px;
@@ -131,33 +174,6 @@ h5, h6 {
         width: 300px;
     }
 
-
-/* menu
-----------------------------------------------------------*/
-ul#menu {
-    font-size: 1.3em;
-    font-weight: 600;
-    margin: 0 0 5px;
-    padding: 0;
-}
-
-    ul#menu li {
-        list-style: none;
-        padding-left: 15px;
-    }
-
-        ul#menu li a {
-            background: none;
-            color: #999;
-            text-decoration: none;
-        }
-
-            ul#menu li a:hover {
-                color: #333;
-                text-decoration: none;
-            }
-
-
 /* page titles */
 hgroup.title {
     margin-bottom: 10px;
@@ -166,22 +182,7 @@ hgroup.title {
     hgroup.title h1{
         display: inline;
     }
-
-aside {
-    float: right;
-    width: 25%;
-}
-
-    aside ul {
-        list-style: none;
-        padding: 0;
-    }
-
-        aside ul li {
-            background: url("../Images/bullet.png") no-repeat 0 50%;
-            padding: 2px 0 2px 20px;
-        }
-
+    
 
 /* login page */
 #loginForm {
@@ -303,7 +304,6 @@ input.input-validation-error {
 table {
     border-collapse: collapse;
     border-spacing: 0;
-    margin-top: 0.75em;
     border: 0 none;
 }
 
