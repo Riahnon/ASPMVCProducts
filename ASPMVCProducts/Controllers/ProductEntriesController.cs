@@ -7,6 +7,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 using WebMatrix.WebData;
 
 namespace ASPMVCProducts.Controllers
@@ -22,25 +23,13 @@ namespace ASPMVCProducts.Controllers
         }
         //
         // GET: /ProductEntries/1
+        [OutputCache(NoStore = true, Duration = 0, Location = OutputCacheLocation.None, VaryByParam = "*")]
         public ActionResult Index(int listid)
         {
             var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
             if (lList != null)
             {
                 return View(lList);
-            }
-            return new HttpNotFoundResult();
-        }
-
-        //
-        // GET: /ProductEntries/Create/1
-        public ActionResult Create(int listid)
-        {
-            var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
-            if (lList != null)
-            {
-                var lModel = new ProductEntryCreateViewModel() { ListId = listid };
-                return View(lModel);
             }
             return new HttpNotFoundResult();
         }
@@ -93,6 +82,7 @@ namespace ASPMVCProducts.Controllers
 
         // GET: /ProductEntries/1/Edit/2
         [HttpGet]
+        [OutputCache(NoStore = true, Duration = 0, Location = OutputCacheLocation.None, VaryByParam = "*")]
         public ActionResult Edit(int listid, int id)
         {
             var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
@@ -145,28 +135,6 @@ namespace ASPMVCProducts.Controllers
                 }
             }
             return RedirectToAction("Index", new { listid = aModel.ListId });
-        }
-
-        // GET: /ProductEntries/Delete/1&2
-        [HttpGet]
-        public ActionResult Delete(int listid, int id)
-        {
-            var lList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == listid);
-            if (lList != null)
-            {
-                var lEntry = lList.Products.Find(aEntry => aEntry.Id == id);
-                if (lEntry != null)
-                {
-                    var lViewModel = new ProductEntryDeleteViewModel()
-                    {
-                        ListId = listid,
-                        EntryId = id,
-                        Name = lEntry.Product.Name
-                    };
-                    return View(lViewModel);
-                }
-            }
-            return new HttpNotFoundResult();
         }
 
         // POST: /ProductLists/4/Delete/5

@@ -11,8 +11,6 @@
 
 <form id="form-productlistAdd" action="/ProductLists/Create" method="post">
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
     <fieldset>
         <legend>Product list creation</legend>
         <div class="editor-field">
@@ -36,7 +34,7 @@
         <div class="div-productlist-delete">
             <form id="form-productlistDelete" action="/ProductLists/Delete/@item.Id" method="post">
                 @Html.AntiForgeryToken()
-                <input type="image" src="Images/delete.png"/>
+                <input type="image" src="~/Images/delete.png"/>
                 
             </form>
         </div>

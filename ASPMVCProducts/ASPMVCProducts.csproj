@@ -360,12 +360,8 @@
     </Content>
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\ProductEntries\Index.cshtml" />
-    <Content Include="Views\ProductEntries\Create.cshtml" />
-    <Content Include="Views\ProductLists\Create.cshtml" />
     <Content Include="Views\ProductLists\Index.cshtml" />
-    <Content Include="Views\ProductLists\Delete.cshtml" />
     <Content Include="Views\ProductEntries\Edit.cshtml" />
-    <Content Include="Views\ProductEntries\Delete.cshtml" />
     <Content Include="Views\Home\ClientApps.cshtml" />
   </ItemGroup>
   <ItemGroup>

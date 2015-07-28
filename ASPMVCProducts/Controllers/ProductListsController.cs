@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 using WebMatrix.WebData;
 
 namespace ASPMVCProducts.Controllers
@@ -23,18 +24,11 @@ namespace ASPMVCProducts.Controllers
         }
         //
         // GET: /ProductLists/
-
+        [OutputCache(NoStore = true, Duration = 0, Location = OutputCacheLocation.None, VaryByParam = "*")]
         public ActionResult Index()
         {
             var lLists = m_tDb.ProductLists.Where(aList => aList.Owner.UserId == WebSecurity.CurrentUserId).ToList();
             return View(lLists);
-        }
-
-        //
-        // GET: /ProductLists/Create
-        public ActionResult Create()
-        {
-            return View(new ProductListCreateViewModel());
         }
 
         //
@@ -68,26 +62,6 @@ namespace ASPMVCProducts.Controllers
                 {
                     //No error notification implemented yet
                 }
-            }
-            return RedirectToAction("Index");
-        }
-
-        // GET: /ProductLists/Delete/5
-        [HttpGet]
-        public ActionResult Delete(int id = 0)
-        {
-            try
-            {
-                var lProductList = m_tDb.ProductLists.FirstOrDefault(aList => aList.Owner.UserId == WebSecurity.CurrentUserId && aList.Id == id);
-                if (lProductList == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(lProductList);
-            }
-            catch
-            {
-                //No error notification implemented yet
             }
             return RedirectToAction("Index");
         }

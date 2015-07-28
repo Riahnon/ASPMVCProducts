@@ -22,14 +22,6 @@ a {
     text-decoration: underline;
 }
 
-    /*a:link, a:hover {
-        color: #333;
-    }
-
-    a:hover {
-        background-color: #c7d1d6;
-    }*/
-
 header, hgroup, section {
     display: block;
 }
@@ -83,33 +75,33 @@ h5, h6 {
 }
 
 #menu-top {
-    font-size: 1.6em;
+    font-size: 1.2em;
+    
 }
+    #menu-top li {
+        display:inline;
+    }
 
 #menu-left, #menu-top {
     font-weight: 600;
     padding-left: 5px;
 }
 
-#menu-left li, #menu-top li {
-    list-style: none;
-    padding: 2px 0 2px 20px;
-    background: url("../Images/bullet.png") no-repeat 0 50%;
-}
-
-    #menu-top li {
-        display:inline;
+    #menu-left li, #menu-top li {
+        list-style: none;
+        padding: 2px 0 2px 20px;
+        background: url("../Images/bullet.png") no-repeat 0 50%;
     }
 
-#menu-left a, #menu-top a{
-    background: none;
-    color: #999;
-    text-decoration: none;
-}
+    #menu-left a, #menu-top a{
+        background: none;
+        color: #999;
+        text-decoration: none;
+    }
 
-#menu-left a:hover, #menu-top a:hover{
-    color: #333;
-}
+        #menu-left a:hover, #menu-top a:hover{
+            color: #333;
+        }
 
 
 #div-login {
@@ -119,13 +111,9 @@ h5, h6 {
     text-align:right;
 }
 
-    #div-login {
-        list-style-type: none;
-        
+    #div-login ul {
+        margin:0px;
     }
-        #div-login ul {
-            margin:0px;
-        }
 
     #div-login li {
         display: inline;
@@ -211,9 +199,6 @@ hgroup.title {
         margin: 0;
     }
 
-    #loginForm input {
-        width: 250px;
-    }
 
         #loginForm input[type="checkbox"],
         #loginForm input[type="submit"] {
@@ -232,42 +217,42 @@ hgroup.title {
         background:rgba(255,0,0,0.2);
     }
 
-#div-productlists {
+#div-productlists, #div-productentries {
     margin-right:25px;
     width:calc(100% - 25px);
     max-width:1000px;
 }
-.div-productlist {
+.div-productlist, .div-productentry {
     display:inline-flex;
     padding:10px;
     width:calc(100% - 20px);
     font-size:1.5em;
 }
 
-.div-productlist-name {
+.div-productlist-name,  .div-productentry-name{
     float:left;
     width:100%;
     margin:auto;
 }
 
-    .div-productlist-name a{
+    .div-productlist-name a, .div-productentry-name a{
         text-decoration:none;
         display:block;
         width:100%;
     }
 
-.div-productlist-delete {
+.div-productlist-delete, .div-productentry-delete {
     margin:auto;
 }
-    .div-productlist-delete form {
+    .div-productlist-delete form, .div-productentry-delete form {
         font-size:0;
         margin:auto;
     }
-    .div-productlist-delete input[type="image"] {
+    .div-productlist-delete input[type="image"], .div-productentry-delete input[type="image"] {
         width:25px;
         height:25px;
     }
-#form-productlistAdd .editor-field {
+#form-productlistAdd .editor-field, #form-productentryAdd .editor-field {
     display:inline;
 }
 
@@ -308,7 +293,7 @@ fieldset input, fieldset textarea {
     font-size: 1.2em;
     margin: 5px 0 6px 0;
     padding: 5px;
-    width: 300px;
+    width: 250px;
 }
 
 fieldset textarea {
@@ -396,5 +381,11 @@ td {
 
     #div-body {
         width:calc(100% - 15px);
+    }
+}
+
+@media all and (orientation:portrait) {
+    #menu-top {
+        font-size:0.75em;
     }
 }

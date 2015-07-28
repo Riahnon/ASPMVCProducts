@@ -3,29 +3,14 @@
 }
 
 $(function () {
-    var lDeletingProductList = false;
     var lEditingProductListEntry = false;
-    var lDeletingProductListEntry = false;
     var lEditingProductEntry = false;
 
-    var lDeleteProductListForm = document.getElementById("form-productlistDelete");
-    if (lDeleteProductListForm) {
-        lDeleteProductListForm.onsubmit = function () {
-            lDeletingProductList = true;
-        }
-    }
 
     var lEditProductListEntryForm = document.getElementById("form-productlistentryEdit");
     if (lEditProductListEntryForm) {
         lEditProductListEntryForm.onsubmit = function () {
             lEditingProductListEntry = true;
-        }
-    }
-
-    var lDeleteProductListEntryForm = document.getElementById("form-productlistentryDelete");
-    if (lDeleteProductListEntryForm) {
-        lDeleteProductListEntryForm.onsubmit = function () {
-            lDeletingProductListEntry = true;
         }
     }
 
@@ -35,14 +20,20 @@ $(function () {
     $(".div-productlist-delete").hover(
       function () { $(this).parent("div").toggleClass("delete-candidate"); }
     );
+    $(".div-productentry").hover(
+     function () { $(this).toggleClass("view-candidate"); }
+   );
+    $(".div-productentry-delete").hover(
+      function () { $(this).parent("div").toggleClass("delete-candidate"); }
+    );
     //Detect internet explorer and customize styles
     if (window.navigator.userAgent.indexOf("MSIE ") > 0)      // If Internet Explorer, return version number
     {
-        //$("#div-top").css("height", "30px");
         $(".div-productlist").css("height", "28px");
         $(".div-productlist-name").css("width", "calc(100% - 30px)");
 
-        
+        $(".div-productentries").css("height", "28px");
+        $(".div-productentry-name").css("width", "calc(100% - 30px)");
         
     }
 
@@ -55,7 +46,7 @@ $(function () {
                 {
                     var lListsURL = "/ProductLists";
                     var lAntiForgeryToken = $("form[id='form-productlistAdd'] input[name='__RequestVerificationToken']").val();
-                    if (document.URL.endsWith(lListsURL)) {
+                    if (endsWith(document.URL, lListsURL)) {
                         $('#div-productlists').append(
                             '<div id="div-productlist-' + aEventData.Id + '" class="div-productlist">' +
                                 '<div class="div-productlist-name">' +
@@ -66,7 +57,7 @@ $(function () {
                                 '<div class="div-productlist-delete">' +
                                     '<form id="form-productlistDelete" action="/ProductLists/Delete/' + aEventData.Id + '" method="post">' + 
                                         '<input name="__RequestVerificationToken" type="hidden" value="' + lAntiForgeryToken + '" />' + 
-                                        '<input type="image" src="Images/delete.png"/>' + 
+                                        '<input type="image" src="/Images/delete.png"/>' + 
                                     '</form>' + 
                                 '</div>' +
                             '</div>');
@@ -79,15 +70,9 @@ $(function () {
                     var lDeleteURL = lListsURL + "/Delete/" + aEventData.Id;
                     var lListOperationURL = lListsURL + "/" + aEventData.Id;
                     //Vieweing product lists
-                    if (document.URL.endsWith(lListsURL)) {
+                    if (endsWith(document.URL, lListsURL)) {
                         var lElement = document.getElementById("div-productlist-" + aEventData.Id);
                         lElement.parentNode.removeChild(lElement);
-                    }//viewing the delete page of the list whit it is deleted 
-                    else if (document.URL.endsWith(lDeleteURL)) {
-                        if (lDeletingProductList == false) {
-                            alert("The list was deleted. You will be redirected to product lists page");
-                            window.location = document.URL.substring(0, document.URL.length - lDeleteURL.length) + lListsURL;
-                        }
                     }//Working with the deleted list
                     else if (document.URL.lastIndexOf(lListOperationURL) != -1) {
                         alert("The product list was deleted. You will be redirected to product lists page");
@@ -98,17 +83,22 @@ $(function () {
             case "ProductListEntryCreated":
                 {
                     var lListURL = "/ProductLists/" + aEventData.ListId;
-                    if (document.URL.endsWith(lListURL)) {
-                        $('#table-productlistentries').append(
-                            '<tr id="tr-productlistentry-' + aEventData.Id + '">' +
-                                '<td>' +
-                                    aEventData.Name +
-                                '</td>' +
-                            '<td>' +
-                                '<a href="/ProductLists/' + aEventData.ListId + '/Edit/' + aEventData.Id + '">Edit</a>&nbsp;' +
-                                '<a href="/ProductLists/' + aEventData.ListId + '/Delete/' + aEventData.Id + '">Delete</a>' +
-                            '</td>' +
-                        '</tr>');
+                    var lAntiForgeryToken = $("form[id='form-productentryAdd'] input[name='__RequestVerificationToken']").val();
+                    if (endsWith(document.URL, lListURL)) {
+                        $('#div-productentries').append(
+                            '<div id="div-productentry-' + aEventData.Id + '" class="div-productentry">' +
+                                '<div class="div-productentry-name">' +
+                                    '<a href="/ProductLists/' + aEventData.ListId  + '/Edit/' + aEventData.Id + '">' +
+                                        aEventData.Name +
+                                    '</a>' +
+                                '</div>' +
+                                '<div class="div-productentry-delete">' +
+                                    '<form id="form-productentryDelete" action="/ProductLists/' + aEventData.ListId + '/Delete/' + aEventData.Id + '" method="post">' +
+                                        '<input name="__RequestVerificationToken" type="hidden" value="' + lAntiForgeryToken + '" />' +
+                                        '<input type="image" src="/Images/delete.png"/>' +
+                                    '</form>' +
+                                '</div>' +
+                            '</div>');
                     }
                 }
                 break;
@@ -118,19 +108,13 @@ $(function () {
                     var lEditURL = lListURL + "/Edit/" + aEventData.Id;
                     var lDeleteURL = lListURL + "/Delete/" + aEventData.Id;
                     //Vieweing the list from which a product entry was deleted
-                    if (document.URL.endsWith(lListURL)) {
-                        var lElement = document.getElementById("tr-productlistentry-" + aEventData.Id);
+                    if (endsWith(document.URL, lListURL)) {
+                        var lElement = document.getElementById("div-productentry-" + aEventData.Id);
                         lElement.parentNode.removeChild(lElement);
                     } //Editing the deleted product entry
-                    else if (document.URL.endsWith(lEditURL)) {
+                    else if (endsWith(document.URL, lEditURL)) {
                         alert("The product entry was deleted. You will be redirected to product list");
                         window.location = document.URL.substring(0, document.URL.length - lEditURL.length) + lListURL;
-                    }
-                    else if (document.URL.endsWith(lDeleteURL)) {
-                        if (lDeletingProductListEntry == false) {
-                            alert("The product entry was deleted. You will be redirected to product list");
-                            window.location = document.URL.substring(0, document.URL.length - lDeleteURL.length) + lListURL;
-                        }
                     }
                 }
                 break;
@@ -138,10 +122,12 @@ $(function () {
                 {
                     var lListURL = "/ProductLists/" + aEventData.ListId;
                     var lEditURL = lListURL + "/Edit/" + aEventData.Id;
-                    if (document.URL.endsWith(lEditURL)) {
+                    if (endsWith(document.URL, lEditURL)) {
                         if (lEditingProductListEntry == false) {
-                            alert("The product entry was modified. Page will be refreshed");
-                            location.reload();
+                            $("input[id='Amount']").val(aEventData.Amount);
+                            $("textarea[id='Comments']").val(aEventData.Comments);
+                            /*alert("The product entry was modified. Page will be refreshed");
+                            location.reload();*/
                         }
                     }
                 }
