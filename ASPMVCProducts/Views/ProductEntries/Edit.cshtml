@@ -4,7 +4,9 @@
     ViewBag.Title = "Edit";
 }
 
-<h1>Edit</h1>
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
 
 <form id="form-productlistentryEdit" action="/ProductLists/@Model.ListId/Edit/@Model.EntryId" method="post">
     @Html.AntiForgeryToken()

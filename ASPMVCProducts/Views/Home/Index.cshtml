@@ -1,12 +1,12 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Welcome";
 }
 <div id="div-homepage">
-    <h1>Welcome!</h1>
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
 
     <h3>This is just a little experiment involving ASP MVC, Entity Framework, Web API and SignalR.</h3>
-
-
     <ul>
         <li>The site uses exposes a simple master-detail view consisting on a set of product lists each of which contains a set of products.
         </li>

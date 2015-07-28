@@ -5,7 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Lists</h1>
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -23,7 +25,9 @@
 {
     <tr id="tr-productlist-@item.Id">
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            <a href="/ProductLists/@item.Id">
+                @Html.DisplayFor(modelItem => item.Name)
+            </a>
         </td>
         <td>
             @Html.ActionLink("View", "Index", "ProductEntries", (object)new { listid = item.Id }, null)

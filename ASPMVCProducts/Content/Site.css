@@ -1,7 +1,9 @@
-﻿html {
-    background-color: #fff;
+﻿html, body {
     margin: 0;
     padding: 0;
+    height:100%;
+    width:100%;
+    background-color: #fff;
 }
 
 body {
@@ -9,9 +11,7 @@ body {
     color: #333;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
-    margin: 0;
-    padding: 0;
-    background-color: #fff;
+    height:calc(100% - 10px);
 }
 
 a {
@@ -61,30 +61,85 @@ h5, h6 {
     font-size: 1em;
 }
 
-#table-base {
-    position:absolute;
-    top:10px;
-    left:0;
-    right:0;
-    bottom:0;
-    width:100%;
-    height:100%;
+#div-left, #div-top {
+    background-color: #eeeeee;
+}
+
+#div-left {
+    float: left;
+    height: 100%;
+    width:150px;
+}
+
+#div-top {
+    float:right;
+    width:calc(100% - 150px);
+    display:none;
+}
+
+#menu-left {
+    margin-top:50px;
+    font-size: 1.4em;
+}
+
+#menu-top {
+    font-size: 1.6em;
+}
+
+#menu-left, #menu-top {
+    font-weight: 600;
+    padding-left: 5px;
+}
+
+#menu-left li, #menu-top li {
+    list-style: none;
+    padding: 2px 0 2px 20px;
+    background: url("../Images/bullet.png") no-repeat 0 50%;
+}
+
+    #menu-top li {
+        display:inline;
     }
 
-#tr-login {
-    height:20px;
+#menu-left a, #menu-top a{
+    background: none;
+    color: #999;
+    text-decoration: none;
 }
-    #tr-login > td:first-child {
-        background-color: #eeeeee;
+
+#menu-left a:hover, #menu-top a:hover{
+    color: #333;
+}
+
+
+#div-login {
+    float:right;
+    padding:15px;
+    width:calc(100% - 180px);
+    text-align:right;
+}
+
+    #div-login {
+        list-style-type: none;
+        
+    }
+        #div-login ul {
+            margin:0px;
+        }
+
+    #div-login li {
+        display: inline;
     }
 
 #div-body {
-    margin-left: 15px;
-    height:100%;
+    float:right;
+    padding-left:15px;
+    width:calc(100% - 165px);
 }
 
 #div-homepage {
-    width: 65%;
+    width:65%;
+    
 }
     #div-homepage > h3  {
         margin-bottom: 35px;
@@ -94,56 +149,6 @@ h5, h6 {
         margin-bottom: 25px;
     }
 
-#layout-login {
-    margin: 5px;
-    margin-right: 15px;
-    float: right;
-    text-align:right;
-}
-
-    #layout-login ul {
-        list-style-type: none;
-    }
-
-    #layout-login li {
-        display: inline;
-        margin-left: 3px;
-        margin-right: 3px;
-    }
-
-#layout-aside {
-    background-color: #eeeeee;
-    /*float: left;*/
-    width: 150px;
-    text-align:start;
-    vertical-align:top;
-    /*padding-top: 50px;*/
-    /*position: absolute;*/
-    /*top: 10px;*/
-    /*bottom: 0px;*/
-}
-#layout-aside > ul {
-    font-size: 1.3em;
-    font-weight: 600;
-    margin: 0 0 5px;
-    padding: 0;
-}
-
-    #layout-aside > ul > li {
-        list-style: none;
-        padding: 2px 0 2px 20px;
-        background: url("../Images/bullet.png") no-repeat 0 50%;
-    }
-
-        #layout-aside > ul > li > a {
-            background: none;
-            color: #999;
-            text-decoration: none;
-        }
-
-            #layout-aside > ul > li > a:hover {
-                color: #333;
-            }
 
 #div-client-apps > h4 {
     margin-left: 15px;
@@ -320,3 +325,27 @@ td {
     border: 0 none;
 }
 
+
+@media all and (max-width: 800px), (orientation:portrait) {
+
+    body {
+        font-size: 1.2em;
+    }
+
+    #div-left {
+        display:none;
+    }
+
+    #div-top {
+        display:initial;
+        width:100%;
+    }
+
+    #div-login {
+        width:100%;
+    }
+
+    #div-body {
+        width:calc(100% - 15px);
+    }
+}
