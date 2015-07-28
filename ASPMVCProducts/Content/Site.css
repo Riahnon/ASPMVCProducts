@@ -264,7 +264,6 @@ hgroup.title {
         margin:auto;
     }
     .div-productlist-delete input[type="image"] {
-        
         width:25px;
         height:25px;
     }
@@ -387,7 +386,7 @@ td {
     }
 
     #div-top {
-        display:initial;
+        display:block;
         width:100%;
     }
 

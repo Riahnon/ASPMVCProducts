@@ -35,6 +35,16 @@ $(function () {
     $(".div-productlist-delete").hover(
       function () { $(this).parent("div").toggleClass("delete-candidate"); }
     );
+    //Detect internet explorer and customize styles
+    if (window.navigator.userAgent.indexOf("MSIE ") > 0)      // If Internet Explorer, return version number
+    {
+        //$("#div-top").css("height", "30px");
+        $(".div-productlist").css("height", "28px");
+        $(".div-productlist-name").css("width", "calc(100% - 30px)");
+
+        
+        
+    }
 
     // Reference the auto-generated proxy for the hub.  
     var productsHub = $.connection.productsHub;
