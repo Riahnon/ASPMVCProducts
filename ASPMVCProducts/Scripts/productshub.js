@@ -28,6 +28,14 @@ $(function () {
             lDeletingProductListEntry = true;
         }
     }
+
+    $(".div-productlist").hover(
+      function () { $(this).toggleClass("view-candidate"); }
+    );
+    $(".div-productlist-delete").hover(
+      function () { $(this).parent("div").toggleClass("delete-candidate"); }
+    );
+
     // Reference the auto-generated proxy for the hub.  
     var productsHub = $.connection.productsHub;
     // Create a function that the hub can call back to display messages.
@@ -36,17 +44,22 @@ $(function () {
             case "ProductListCreated":
                 {
                     var lListsURL = "/ProductLists";
+                    var lAntiForgeryToken = $("form[id='form-productlistAdd'] input[name='__RequestVerificationToken']").val();
                     if (document.URL.endsWith(lListsURL)) {
-                        $('#table-productlists').append(
-                            '<tr id="tr-productlist-' + aEventData.Id + '">' +
-                                '<td>' +
-                                    aEventData.Name +
-                                '</td>' +
-                            '<td>' +
-                                '<a href="/ProductLists/' + aEventData.Id + '">View</a>&nbsp;' +
-                                '<a href="/ProductLists/Delete/' + aEventData.Id + '">Delete</a>' +
-                            '</td>' +
-                        '</tr>');
+                        $('#div-productlists').append(
+                            '<div id="div-productlist-' + aEventData.Id + '" class="div-productlist">' +
+                                '<div class="div-productlist-name">' +
+                                    '<a href="/ProductLists/' + aEventData.Id + '">' + 
+                                        aEventData.Name +
+                                    '</a>' +
+                                '</div>' +
+                                '<div class="div-productlist-delete">' +
+                                    '<form id="form-productlistDelete" action="/ProductLists/Delete/' + aEventData.Id + '" method="post">' + 
+                                        '<input name="__RequestVerificationToken" type="hidden" value="' + lAntiForgeryToken + '" />' + 
+                                        '<input type="image" src="Images/delete.png"/>' + 
+                                    '</form>' + 
+                                '</div>' +
+                            '</div>');
                     }
                 }
                 break;
@@ -57,7 +70,7 @@ $(function () {
                     var lListOperationURL = lListsURL + "/" + aEventData.Id;
                     //Vieweing product lists
                     if (document.URL.endsWith(lListsURL)) {
-                        var lElement = document.getElementById("tr-productlist-" + aEventData.Id);
+                        var lElement = document.getElementById("div-productlist-" + aEventData.Id);
                         lElement.parentNode.removeChild(lElement);
                     }//viewing the delete page of the list whit it is deleted 
                     else if (document.URL.endsWith(lDeleteURL)) {

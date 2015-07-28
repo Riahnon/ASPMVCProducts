@@ -22,13 +22,13 @@ a {
     text-decoration: underline;
 }
 
-    a:link, a:hover {
+    /*a:link, a:hover {
         color: #333;
     }
 
     a:hover {
         background-color: #c7d1d6;
-    }
+    }*/
 
 header, hgroup, section {
     display: block;
@@ -224,6 +224,54 @@ hgroup.title {
     display: inline;
 }
 
+.view-candidate {
+        background:#eeeeee;
+    }
+
+.delete-candidate {
+        background:rgba(255,0,0,0.2);
+    }
+
+#div-productlists {
+    margin-right:25px;
+    width:calc(100% - 25px);
+    max-width:1000px;
+}
+.div-productlist {
+    display:inline-flex;
+    padding:10px;
+    width:calc(100% - 20px);
+    font-size:1.5em;
+}
+
+.div-productlist-name {
+    float:left;
+    width:100%;
+    margin:auto;
+}
+
+    .div-productlist-name a{
+        text-decoration:none;
+        display:block;
+        width:100%;
+    }
+
+.div-productlist-delete {
+    margin:auto;
+}
+    .div-productlist-delete form {
+        font-size:0;
+        margin:auto;
+    }
+    .div-productlist-delete input[type="image"] {
+        
+        width:25px;
+        height:25px;
+    }
+#form-productlistAdd .editor-field {
+    display:inline;
+}
+
 /* forms */
 fieldset {
     border: none;
@@ -254,7 +302,7 @@ label {
         display: inline;
     }
 
-input, textarea {
+fieldset input, fieldset textarea {
     border: 1px solid #e2e2e2;
     background: #fff;
     color: #333;
@@ -264,22 +312,22 @@ input, textarea {
     width: 300px;
 }
 
-textarea {
+fieldset textarea {
     font-family: inherit;
     width: 500px;
 }
 
-    input:focus, textarea:focus {
+fieldset input:focus, fieldset textarea:focus {
         border: 1px solid #7ac0da;
     }
 
-input[type="checkbox"] {
+fieldset input[type="checkbox"] {
     background: transparent;
     border: inherit;
     width: auto;
 }
 
-input[type="submit"] {
+fieldset input[type="submit"] {
     background-color: #d3dce0;
     border: 1px solid #787878;
     cursor: pointer;
@@ -303,6 +351,8 @@ input[type="submit"] {
 input.input-validation-error {
     border: 1px solid #e80c4d;
 }
+
+
 
 /* tables
 ----------------------------------------------------------*/

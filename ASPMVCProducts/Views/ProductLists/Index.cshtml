@@ -9,31 +9,39 @@
     <h1>@ViewBag.Title</h1>
 </hgroup>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table id="table-productlists">
-    @if(Model.Count() > 0 ){
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th></th>
-    </tr>
-    }
+<form id="form-productlistAdd" action="/ProductLists/Create" method="post">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Product list creation</legend>
+        <div class="editor-field">
+            <input class="text-box single-line" id="Name" name="Name" type="text" value="" />
+            <span class="field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+        </div>
+
+        <input type="submit" value="Add" />
+    </fieldset>
+</form>
+
+<div id="div-productlists">
 @foreach (var item in Model)
 {
-    <tr id="tr-productlist-@item.Id">
-        <td>
+    <div id="div-productlist-@item.Id" class="div-productlist">
+        <div class="div-productlist-name">
             <a href="/ProductLists/@item.Id">
                 @Html.DisplayFor(modelItem => item.Name)
             </a>
-        </td>
-        <td>
-            @Html.ActionLink("View", "Index", "ProductEntries", (object)new { listid = item.Id }, null)
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-        </td>
-    </tr>
+        </div>
+        <div class="div-productlist-delete">
+            <form id="form-productlistDelete" action="/ProductLists/Delete/@item.Id" method="post">
+                @Html.AntiForgeryToken()
+                <input type="image" src="Images/delete.png"/>
+                
+            </form>
+        </div>
+    </div>
 }
+</div>
 
-</table>
+
