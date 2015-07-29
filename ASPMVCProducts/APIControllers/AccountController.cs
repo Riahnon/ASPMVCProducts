@@ -14,10 +14,11 @@ using WebMatrix.WebData;
 
 namespace ASPMVCProducts.APIControllers
 {
+    [APIVersionCheckActionFilter]
     public class AccountController : ApiController
     {
         ProductsDb m_tDb = new ProductsDb();
-        public class RegisterUserDTO
+        public class LoginRegisterDTO
         {
             public string UserName { get; set; }
             public string Password { get; set; }
@@ -32,9 +33,11 @@ namespace ASPMVCProducts.APIControllers
         // POST api/accountapi/register
         [HttpPost]
         [ActionName("register")]
-        public HttpResponseMessage Register([FromBody]RegisterUserDTO aUser)
+        public HttpResponseMessage Register([FromBody]LoginRegisterDTO aUser)
         {
             var lMembership = (SimpleMembershipProvider)Membership.Provider;
+            var lVersion = this.Request.Headers.GetValues ( Resources.API_VERSION_HEADER ).FirstOrDefault();
+            
 
             if (lMembership.GetUser(aUser.UserName, false) == null)
             {
@@ -55,7 +58,7 @@ namespace ASPMVCProducts.APIControllers
         // POST api/accountapi
         [HttpPost]
         [ActionName("login")]
-        public HttpResponseMessage Login([FromBody]RegisterUserDTO aUser)
+        public HttpResponseMessage Login([FromBody]LoginRegisterDTO aUser)
         {
             var lUserProfile = m_tDb.UserProfiles.FirstOrDefault(aUserProfile => aUserProfile.UserName == aUser.UserName);
             if (lUserProfile != null && WebSecurity.Login(aUser.UserName, aUser.Password))

@@ -13,6 +13,7 @@ using Microsoft.AspNet.SignalR;
 
 namespace ASPMVCProducts.APIControllers
 {
+    [APIVersionCheckActionFilter]
     public class ProductListsController : ApiController
     {
         ProductsDb m_tDb = new ProductsDb();

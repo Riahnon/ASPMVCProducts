@@ -10,6 +10,7 @@ using WebMatrix.WebData;
 
 namespace ASPMVCProducts.APIControllers
 {
+    [APIVersionCheckActionFilter]
     public class ProductEntriesController : ApiController
     {
         ProductsDb m_tDb = new ProductsDb();
