@@ -1,0 +1,50 @@
+﻿@model ASPMVCSignalRTest.ViewModels.ProductEntryEditViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
+
+<form id="form-productentryEdit" action="/ProductLists/@Model.ListId/Edit/@Model.EntryId" method="post">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Product entry</legend>
+
+        @Html.HiddenFor(model => model.ListId)
+        @Html.HiddenFor(model => model.EntryId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Amount)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Amount)
+            @Html.ValidationMessageFor(model => model.Amount)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comments)
+        </div>
+        <div class="editor-field">
+           @* @Html.EditorFor(model => model.Comments)*@
+            <textarea id="Comments" class="valid" name="Comments">@Model.Comments</textarea>
+            @Html.ValidationMessageFor(model => model.Comments)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+</form>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

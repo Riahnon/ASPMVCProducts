@@ -1,0 +1,395 @@
+﻿html, body {
+    margin: 0;
+    padding: 0;
+    height:100%;
+    width:100%;
+    background-color: #fff;
+}
+
+body {
+    border-top: solid 10px #000;
+    color: #333;
+    font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    height:calc(100% - 10px);
+}
+
+a {
+    color: #333;
+    outline: none;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-decoration: underline;
+}
+
+header, hgroup, section {
+    display: block;
+}
+
+h1, h2, h3,
+h4, h5, h6 {
+    color: #000;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.75em;
+}
+
+h3 {
+    font-size: 1.2em;
+}
+
+h4 {
+    font-size: 1.1em;
+}
+
+h5, h6 {
+    font-size: 1em;
+}
+
+#div-left, #div-top {
+    background-color: #eeeeee;
+}
+
+#div-left {
+    float: left;
+    height: 100%;
+    width:150px;
+}
+
+#div-top {
+    float:right;
+    width:calc(100% - 150px);
+    display:none;
+}
+
+#menu-left {
+    margin-top:50px;
+    font-size: 1.4em;
+}
+
+#menu-top {
+    font-size: 1.2em;
+    
+}
+    #menu-top li {
+        display:inline;
+    }
+
+#menu-left, #menu-top {
+    font-weight: 600;
+    padding-left: 5px;
+}
+
+    #menu-left li, #menu-top li {
+        list-style: none;
+        padding: 2px 0 2px 20px;
+        background: url("../Images/bullet.png") no-repeat 0 50%;
+    }
+
+    #menu-left a, #menu-top a{
+        background: none;
+        color: #999;
+        text-decoration: none;
+    }
+
+        #menu-left a:hover, #menu-top a:hover{
+            color: #333;
+        }
+
+
+#div-login {
+    float:right;
+    padding:15px;
+    width:calc(100% - 180px);
+    text-align:right;
+}
+
+    #div-login ul {
+        margin:0px;
+    }
+
+    #div-login li {
+        display: inline;
+    }
+
+#div-body {
+    float:right;
+    padding-left:15px;
+    width:calc(100% - 165px);
+}
+
+#div-homepage {
+    width:65%;
+    
+}
+    #div-homepage > h3  {
+        margin-bottom: 35px;
+
+    }
+    #div-homepage > ul > li {
+        margin-bottom: 25px;
+    }
+
+
+#div-client-apps > h4 {
+    margin-left: 15px;
+}
+
+#div-client-apps > p {
+    margin-left: 25px;
+    margin-bottom: 30px;
+}
+
+#div-errorpage {
+    width: 80%;
+}
+
+    #div-errorpage > h1 {
+        text-align: center;
+    }
+
+    #div-errorpage > h2 {
+        text-align: center;
+    }
+
+    #div-errorpage > img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 35px;
+        width: 300px;
+    }
+
+/* page titles */
+hgroup.title {
+    margin-bottom: 10px;
+}
+
+    hgroup.title h1{
+        display: inline;
+    }
+    
+
+/* login page */
+#loginForm {
+    float: left;
+    width: 55%;
+}
+
+    #loginForm .validation-error {
+        display: block;
+        margin-left: 15px;
+    }
+
+    #loginForm .validation-summary-errors ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    #loginForm .validation-summary-errors li {
+        display: inline;
+        list-style: none;
+        margin: 0;
+    }
+
+
+        #loginForm input[type="checkbox"],
+        #loginForm input[type="submit"] {
+            width: auto;
+        }
+
+#logoutForm {
+    display: inline;
+}
+
+.view-candidate {
+        background:#eeeeee;
+    }
+
+.delete-candidate {
+        background:rgba(255,0,0,0.2);
+    }
+
+#div-productlists, #div-productentries {
+    margin-right:25px;
+    width:calc(100% - 25px);
+    max-width:1000px;
+}
+.div-productlist, .div-productentry {
+    display:inline-flex;
+    padding:10px;
+    width:calc(100% - 20px);
+    font-size:1.5em;
+}
+
+.div-productlist-name,  .div-productentry-name{
+    float:left;
+    width:100%;
+    margin:auto;
+}
+
+    .div-productlist-name a, .div-productentry-name a{
+        text-decoration:none;
+        display:block;
+        width:100%;
+    }
+
+.div-productlist-delete, .div-productentry-delete {
+    margin:auto;
+}
+    .div-productlist-delete form, .div-productentry-delete form {
+        font-size:0;
+        margin:auto;
+    }
+    .div-productlist-delete input[type="image"], .div-productentry-delete input[type="image"] {
+        width:25px;
+        height:25px;
+    }
+#form-productlistAdd .editor-field, #form-productentryAdd .editor-field {
+    display:inline;
+}
+
+/* forms */
+fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+    fieldset legend {
+        display: none;
+    }
+
+    fieldset ol {
+        padding: 0;
+        list-style: none;
+    }
+
+        fieldset ol li {
+            padding-bottom: 5px;
+        }
+
+label {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+    label.checkbox {
+        display: inline;
+    }
+
+fieldset input, fieldset textarea {
+    border: 1px solid #e2e2e2;
+    background: #fff;
+    color: #333;
+    font-size: 1.2em;
+    margin: 5px 0 6px 0;
+    padding: 5px;
+    width: 250px;
+}
+
+fieldset textarea {
+    font-family: inherit;
+    width: 500px;
+}
+
+fieldset input:focus, fieldset textarea:focus {
+        border: 1px solid #7ac0da;
+    }
+
+fieldset input[type="checkbox"] {
+    background: transparent;
+    border: inherit;
+    width: auto;
+}
+
+fieldset input[type="submit"] {
+    background-color: #d3dce0;
+    border: 1px solid #787878;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: 600;
+    padding: 7px;
+    margin-right: 8px;
+    width: auto;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #e80c4d;
+}
+
+
+
+/* tables
+----------------------------------------------------------*/
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 0 none;
+}
+
+th {
+    font-size: 1.2em;
+    text-align: left;
+    border: none 0px;
+    padding-left: 0;
+}
+     
+
+td {
+    padding: 0.25em 2em 0.25em 0em;
+    border: 0 none;
+}
+
+
+@media all and (max-width: 800px), (orientation:portrait) {
+
+    body {
+        font-size: 1.2em;
+    }
+
+    #div-left {
+        display:none;
+    }
+
+    #div-top {
+        display:block;
+        width:100%;
+    }
+
+    #div-login {
+        width:100%;
+    }
+
+    #div-body {
+        width:calc(100% - 15px);
+    }
+
+    #div-homepage {
+        width:calc(100% - 10px)
+    }
+}
+
+@media all and (orientation:portrait) {
+    #menu-top {
+        font-size:0.75em;
+    }
+}
