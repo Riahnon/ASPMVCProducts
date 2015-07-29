@@ -3,14 +3,14 @@
 }
 
 $(function () {
-    var lEditingProductListEntry = false;
     var lEditingProductEntry = false;
 
 
-    var lEditProductListEntryForm = document.getElementById("form-productlistentryEdit");
-    if (lEditProductListEntryForm) {
-        lEditProductListEntryForm.onsubmit = function () {
-            lEditingProductListEntry = true;
+    var lEditProductEntryForm = document.getElementById("form-productentryEdit");
+
+    if (lEditProductEntryForm) {
+        lEditProductEntryForm.onsubmit = function () {
+            lEditingProductEntry = true;
         }
     }
 
@@ -27,14 +27,13 @@ $(function () {
       function () { $(this).parent("div").toggleClass("delete-candidate"); }
     );
     //Detect internet explorer and customize styles
-    if (window.navigator.userAgent.indexOf("MSIE ") > 0)      // If Internet Explorer, return version number
+    if (window.navigator.userAgent.indexOf("MSIE ") > 0)
     {
         $(".div-productlist").css("height", "28px");
         $(".div-productlist-name").css("width", "calc(100% - 30px)");
 
         $(".div-productentries").css("height", "28px");
         $(".div-productentry-name").css("width", "calc(100% - 30px)");
-        
     }
 
     // Reference the auto-generated proxy for the hub.  
@@ -46,9 +45,10 @@ $(function () {
                 {
                     var lListsURL = "/ProductLists";
                     var lAntiForgeryToken = $("form[id='form-productlistAdd'] input[name='__RequestVerificationToken']").val();
+                    var lListId = "div-productlist-" + aEventData.Id;
                     if (endsWith(document.URL, lListsURL)) {
                         $('#div-productlists').append(
-                            '<div id="div-productlist-' + aEventData.Id + '" class="div-productlist">' +
+                            '<div id="' + lListId + '" class="div-productlist">' +
                                 '<div class="div-productlist-name">' +
                                     '<a href="/ProductLists/' + aEventData.Id + '">' + 
                                         aEventData.Name +
@@ -61,6 +61,19 @@ $(function () {
                                     '</form>' + 
                                 '</div>' +
                             '</div>');
+                        //Extra CSS needed for IE
+                        if (window.navigator.userAgent.indexOf("MSIE ") > 0) {
+                            $("#" + lListId ).css("height", "28px");
+                            $("#" + lListId + " .div-productlist-name").css("width", "calc(100% - 30px)");
+                        }
+                        //hover events for newly generated list
+                        $("#" + lListId).hover(
+                             function () { $(this).toggleClass("view-candidate"); }
+                        );
+                        $("#" + lListId + " .div-productlist-delete").hover(
+                            function () { $(this).parent("div").toggleClass("delete-candidate"); }
+                        );
+
                     }
                 }
                 break;
@@ -80,13 +93,14 @@ $(function () {
                     }
                 }
                 break;
-            case "ProductListEntryCreated":
+            case "ProductEntryCreated":
                 {
                     var lListURL = "/ProductLists/" + aEventData.ListId;
                     var lAntiForgeryToken = $("form[id='form-productentryAdd'] input[name='__RequestVerificationToken']").val();
+                    var lEntryId = "div-productentry-" + aEventData.Id;
                     if (endsWith(document.URL, lListURL)) {
                         $('#div-productentries').append(
-                            '<div id="div-productentry-' + aEventData.Id + '" class="div-productentry">' +
+                            '<div id="' + lEntryId + '" class="div-productentry">' +
                                 '<div class="div-productentry-name">' +
                                     '<a href="/ProductLists/' + aEventData.ListId  + '/Edit/' + aEventData.Id + '">' +
                                         aEventData.Name +
@@ -99,10 +113,22 @@ $(function () {
                                     '</form>' +
                                 '</div>' +
                             '</div>');
+                        //Extra CSS needed for IE
+                        if (window.navigator.userAgent.indexOf("MSIE ") > 0) {
+                            $("#" + lEntryId).css("height", "28px");
+                            $("#" + lEntryId + " .div-productentry-name").css("width", "calc(100% - 30px)");
+                        }
+                        //hover events for newly generated entry
+                        $("#" + lEntryId).hover(
+                             function () { $(this).toggleClass("view-candidate"); }
+                        );
+                        $("#" + lEntryId + " .div-productentry-delete").hover(
+                            function () { $(this).parent("div").toggleClass("delete-candidate"); }
+                        );
                     }
                 }
                 break;
-            case "ProductListEntryDeleted":
+            case "ProductEntryDeleted":
                 {
                     var lListURL = "/ProductLists/" + aEventData.ListId;
                     var lEditURL = lListURL + "/Edit/" + aEventData.Id;
@@ -118,16 +144,14 @@ $(function () {
                     }
                 }
                 break;
-            case "ProductListEntryEdited":
+            case "ProductEntryEdited":
                 {
                     var lListURL = "/ProductLists/" + aEventData.ListId;
                     var lEditURL = lListURL + "/Edit/" + aEventData.Id;
                     if (endsWith(document.URL, lEditURL)) {
-                        if (lEditingProductListEntry == false) {
+                        if (lEditingProductEntry == false) {
                             $("input[id='Amount']").val(aEventData.Amount);
                             $("textarea[id='Comments']").val(aEventData.Comments);
-                            /*alert("The product entry was modified. Page will be refreshed");
-                            location.reload();*/
                         }
                     }
                 }

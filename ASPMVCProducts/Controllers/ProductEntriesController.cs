@@ -68,7 +68,7 @@ namespace ASPMVCProducts.Controllers
                             m_tDb.SaveChanges();
                             var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
                             foreach (var lConnectionId in lConnectionIds)
-                                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryCreated", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Amount = lEntry.Amount, Comments = lEntry.Comments });
+                                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductEntryCreated", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Amount = lEntry.Amount, Comments = lEntry.Comments });
                         }
                     }
                 }
@@ -125,7 +125,7 @@ namespace ASPMVCProducts.Controllers
                             m_tDb.SaveChanges();
                             var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
                             foreach (var lConnectionId in lConnectionIds)
-                                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryEdited", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Amount = lEntry.Amount, Comments = lEntry.Comments });
+                                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductEntryEdited", new { ListId = lList.Id, Id = lEntry.Id, Name = lEntry.Product.Name, Amount = lEntry.Amount, Comments = lEntry.Comments });
                         }
                     }
                 }
@@ -156,7 +156,7 @@ namespace ASPMVCProducts.Controllers
                             m_tDb.SaveChanges();
                             var lConnectionIds = ProductsHub.GetConnectionsIdsOf(WebSecurity.CurrentUserName).ToArray();
                             foreach (var lConnectionId in lConnectionIds)
-                                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductListEntryDeleted", new { ListId = lList.Id, Id = lEntry.Id });
+                                mProductsHubCtx.Clients.Client(lConnectionId).OnServerEvent("ProductEntryDeleted", new { ListId = lList.Id, Id = lEntry.Id });
                         }
                         catch
                         {

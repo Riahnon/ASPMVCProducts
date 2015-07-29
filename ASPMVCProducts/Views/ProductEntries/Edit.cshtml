@@ -8,7 +8,7 @@
     <h1>@ViewBag.Title</h1>
 </hgroup>
 
-<form id="form-productlistentryEdit" action="/ProductLists/@Model.ListId/Edit/@Model.EntryId" method="post">
+<form id="form-productentryEdit" action="/ProductLists/@Model.ListId/Edit/@Model.EntryId" method="post">
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
