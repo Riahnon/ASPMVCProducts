@@ -382,6 +382,10 @@ td {
     #div-body {
         width:calc(100% - 15px);
     }
+
+    #div-homepage {
+        width:calc(100% - 10px)
+    }
 }
 
 @media all and (orientation:portrait) {
